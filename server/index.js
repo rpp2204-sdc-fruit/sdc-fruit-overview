@@ -1,7 +1,9 @@
 require('dotenv').config();
+// require('../db_mongo/config.js');
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
 const compression = require('compression');
@@ -18,27 +20,21 @@ const {
 } = require('./utils/questionsAnswersHelper.js');
 const { uploadToCloudinary } = require('./utils/uploadToCloudinary');
 const { postInteractions } = require('./utils/postInteractions');
-const { getProduct } = require('./utils/productDetails.js');
 const reviewsHelpers = require('./utils/reviewsHelpers.js');
 
-const { URL, TOKEN, PORT } = process.env;
+const { URL, PORT } = process.env;
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp';
-
 
 app.use('/', (req, res, next) => {
   console.log(`${req.method} REQUEST ON ${req.url}`);
   next();
 });
 
+app.use(cors());
 app.use(history());
 app.use(compression());
 app.use(express.static(path.join(__dirname, '/../client/dist')));
-app.use(express.json({ limit: '10mb' }));
-
-app.use('/', (req, res, next) => {
-  console.log(`${req.method} REQUEST ON ${req.url}`);
-  next();
-});
+app.use(express.json({ limit: '2mb' }));
 
 // *** Q & A *** //
 
@@ -97,7 +93,7 @@ app.get('/products', (req, res, next) => {
 
 /////////////// OVERVIEW COMPONENT //////////////////////
 
-app.get('/products/:id', (req, res, next) => {
+app.get('/products/:id', async (req, res, next) => {
   // console.log(`Received a get request to get the prodcut information for product: ${req.params.id} and  url: ${req.url}`);
   axios
     .get(url + req.url, {
@@ -112,7 +108,7 @@ app.get('/products/:id', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/products/:id/styles', (req, res, next) => {
+app.get('/products/:id/styles', async (req, res, next) => {
   axios
     .get(url + req.url, {
       headers: {
@@ -199,12 +195,12 @@ app.post('/interactions', (req, res) => {
   });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.log('error in express error handler: ', err.message);
   res.status(500).send({ error: err.message });
 });
 
-const port = process.env.PORT || 8000;
+const port = PORT || 8000;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
