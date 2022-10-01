@@ -66,39 +66,10 @@ const convertData = async (filePath, collection) => {
   })
 }
 
-// const convertData = async (filePath, collection, jsonData) => {
-//   const csvFile = fs.readFileSync(filePath);
-//   const csvData = csvFile.toString();
+const parseCSV = async (csv, collection) => {
+  let jsonFilePath = await convertData(csv, collection);
 
-//   console.log(fs.stat(csvFile, (err, stat) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log(stats);
-//     }
-//   }));
-
-//   // return new Promise(resolve => {
-//     Papa.parse(csvData, {
-//       header: true,
-//       skipEmptyLines: true,
-//       complete: function(results) {
-//         const jsonFile = fs.createWriteStream(`/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/${collection}.json`);
-//         jsonFile.write(jsonData);
-//         jsonFile.end();
-//         // createDocuments();
-//       }
-//     });
-
-//   // })
-// }
-
-
-const createJSON = async (csv, collection) => {
-  let jsonPath = await convertData(csv, collection);
-  console.log(jsonPath)
-
-  exec(`mongoimport --uri='mongodb://localhost/product_overview' --collection=${collection} --file=${jsonPath} --jsonArray`, (error, stdout, stderr) => {
+  exec(`mongoimport --uri='mongodb://localhost/product_overview' --collection=${collection} --file=${jsonFilePath} --jsonArray`, (error, stdout, stderr) => {
     if(error) {
       console.log(`error: ${error.message}`);
       return;
@@ -109,20 +80,33 @@ const createJSON = async (csv, collection) => {
     }
     console.log(`stdout: ${stdout}`);
   })
-  // console.log('Finished Products')
-
-  // let featuresData = convertData(featuresCSV, 'features');
-  // console.log('Finished Features')
-
-  // let stylesData = convertData(stylesCSV, 'styles');
-  // console.log('Finished Styles')
-
-  // let skusData = convertData(skusCSV, 'skus');
-  // console.log('Finished Skus')
-
-  // let photosData = convertData(photosCSV, 'photos');
-  // console.log('Finished Photos')
-
 }
 
-createJSON(productsCSV, 'products');
+parseCSV(productsCSV, 'products');
+// parseCSV(featuresCSV, 'features');
+// parseCSV(photosCSV, 'photos');
+parseCSV(stylesCSV, 'styles');
+// parseCSV(skusCSV, 'skus');
+
+
+
+
+
+const createSubdocuments = (csvFilePath, collection) => {
+  exec(`mongoimport --uri=mongodb://localhost/product_overview --collection=${collection} --file=${csvFilePath} --type=csv --headerline`, (error, stdout, stderr) => {
+    if(error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  })
+}
+
+// createSubdocuments(featuresCSV, 'features');
+// createSubdocuments(skusCSV, 'skus');
+// createSubdocuments(photosCSV, 'photos');
+
