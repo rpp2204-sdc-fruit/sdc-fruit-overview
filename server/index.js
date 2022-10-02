@@ -1,5 +1,5 @@
 require('dotenv').config();
-// require('../db_mongo/config.js');
+require('../db_mongo/config.js');
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
