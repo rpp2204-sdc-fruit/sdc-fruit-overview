@@ -1,248 +1,4 @@
-// const fs = require('fs');
-// const Papa = require('papaparse');
-
-// const { Products, Features, Sytles, Skus, Photos } = require('./schema')
-
-
-// // const readProducts = async (filePath) => {
-//   //   const csvFile = fs.readFileSync(filePath)
-//   //   const csvData csvFile.toString()
-//   // }
-//   const createDocuments = (data) => {
-//     // console.log(Array.isArray(data))
-//     // Products.insertMany(data)
-//     //   .then(() => console.log('Data inserted'))
-//     //   .catch(error => console.log('Error:', error))
-//   }
-
-// const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
-// const csvFile = fs.readFileSync(productsCSV);
-// const csvData = csvFile.toString();
-
-// Papa.parse(csvData, {
-//   header: true,
-//   skipEmptyLines: true,
-//   complete: function(results) {
-//     // createDocuments(results.data);
-//     const jsonFile = fs.createWriteStream('/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.json');
-//     jsonFile.write(JSON.stringify(results));
-//     jsonFile.end();
-//     createDocuments();
-//   }
-// });
-
-
-const fs = require('fs');
-const Papa = require('papaparse');
-const { exec } = require("child_process");
-
-const { Products, Features, Sytles, Skus, Photos } = require('./schema')
-
-const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
-const featuresCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/features.csv';
-const stylesCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/styles.csv';
-const skusCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/skus.csv';
-const photosCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/photos.csv';
-
-const convertData = async (filePath, collection) => {
-  const csvFile = fs.readFileSync(filePath);
-  const csvData = csvFile.toString();
-  const jsonFilePath = `/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/${collection}.json`
-
-  return new Promise(resolve => {
-    Papa.parse(csvData, {
-      header: true,
-      skipEmptyLines: true,
-      chunk: async function(results) {
-        const jsonFile = await fs.createWriteStream(jsonFilePath);
-        jsonFile.write(JSON.stringify(results.data));
-        jsonFile.end();
-      },
-      complete: function(results, file) {
-        resolve(jsonFilePath);
-      }
-    });
-
-  })
-}
-
-const parseCSV = async (csv, collection) => {
-  let jsonFilePath = await convertData(csv, collection);
-
-  exec(`mongoimport --uri='mongodb://localhost/product_overview' --collection=${collection} --file=${jsonFilePath} --jsonArray`, (error, stdout, stderr) => {
-    if(error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-  })
-}
-
-// parseCSV(productsCSV, 'products');
-// parseCSV(featuresCSV, 'features');
-// parseCSV(photosCSV, 'photos');
-// parseCSV(stylesCSV, 'styles');
-// parseCSV(skusCSV, 'skus');
-
-
-
-
-
-const createTempDocs = (csvFilePath, collection) => {
-  exec(`mongoimport --uri=mongodb://localhost/product_overview --collection=${collection} --file=${csvFilePath} --type=csv --headerline`, (error, stdout, stderr) => {
-    if(error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-  })
-}
-
-createTempDocs(productsCSV, 'products');
-createTempDocs(featuresCSV, 'features');
-createTempDocs(photosCSV, 'photos');
-createTempDocs(stylesCSV, 'styles');
-createTempDocs(skusCSV, 'skus');
-
-// // // const fs = require('fs');
-// // // const Papa = require('papaparse');
-
-// // // const { Products, Features, Sytles, Skus, Photos } = require('./schema')
-
-
-// // // // const readProducts = async (filePath) => {
-// // //   //   const csvFile = fs.readFileSync(filePath)
-// // //   //   const csvData csvFile.toString()
-// // //   // }
-// // //   const createDocuments = (data) => {
-// // //     // console.log(Array.isArray(data))
-// // //     // Products.insertMany(data)
-// // //     //   .then(() => console.log('Data inserted'))
-// // //     //   .catch(error => console.log('Error:', error))
-// // //   }
-
-// // // const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
-// // // const csvFile = fs.readFileSync(productsCSV);
-// // // const csvData = csvFile.toString();
-
-// // // Papa.parse(csvData, {
-// // //   header: true,
-// // //   skipEmptyLines: true,
-// // //   complete: function(results) {
-// // //     // createDocuments(results.data);
-// // //     const jsonFile = fs.createWriteStream('/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.json');
-// // //     jsonFile.write(JSON.stringify(results));
-// // //     jsonFile.end();
-// // //     createDocuments();
-// // //   }
-// // // });
-
-
-// // const fs = require('fs');
-// // const Papa = require('papaparse');
-// // const { exec } = require("child_process");
-
-// // const { Products, Features, Sytles, Skus, Photos } = require('./schema')
-
-// // const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
-// // const featuresCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/features.csv';
-// // const stylesCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/styles.csv';
-// // const skusCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/skus.csv';
-// // const photosCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/photos.csv';
-
-// // const convertData = async (filePath, collection) => {
-// //   const csvFile = fs.readFileSync(filePath);
-// //   const csvData = csvFile.toString();
-// //   const jsonFilePath = `/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/${collection}.json`
-
-// //   return new Promise(resolve => {
-// //     Papa.parse(csvData, {
-// //       header: true,
-// //       skipEmptyLines: true,
-// //       chunk: async function(results) {
-// //         const jsonFile = await fs.createWriteStream(jsonFilePath);
-// //         jsonFile.write(JSON.stringify(results.data));
-// //         jsonFile.end();
-// //       },
-// //       complete: function(results, file) {
-// //         resolve(jsonFilePath);
-// //       }
-// //     });
-
-// //   })
-// // }
-
-// // const parseCSV = async (csv, collection) => {
-// //   let jsonFilePath = await convertData(csv, collection);
-
-// //   exec(`mongoimport --uri='mongodb://localhost/product_overview' --collection=${collection} --file=${jsonFilePath} --jsonArray`, (error, stdout, stderr) => {
-// //     if(error) {
-// //       console.log(`error: ${error.message}`);
-// //       return;
-// //     }
-// //     if (stderr) {
-// //       console.log(`stderr: ${stderr}`);
-// //       return;
-// //     }
-// //     console.log(`stdout: ${stdout}`);
-// //   })
-// // }
-
-// // parseCSV(productsCSV, 'products');
-// // // parseCSV(featuresCSV, 'features');
-// // // parseCSV(photosCSV, 'photos');
-// // parseCSV(stylesCSV, 'styles');
-// // // parseCSV(skusCSV, 'skus');
-
-
-
-
-
-// // const createSubdocuments = (csvFilePath, collection) => {
-// //   exec(`mongoimport --uri=mongodb://localhost/product_overview --collection=${collection} --file=${csvFilePath} --type=csv --headerline`, (error, stdout, stderr) => {
-// //     if(error) {
-// //       console.log(`error: ${error.message}`);
-// //       return;
-// //     }
-// //     if (stderr) {
-// //       console.log(`stderr: ${stderr}`);
-// //       return;
-// //     }
-// //     console.log(`stdout: ${stdout}`);
-// //   })
-// // }
-
-// // // createSubdocuments(featuresCSV, 'features');
-// // // createSubdocuments(skusCSV, 'skus');
-// // // createSubdocuments(photosCSV, 'photos');
-
-
-
-
-// const fs = require('fs');
-// const mongoose = require('mongoose');
-
-// // mongoose.connect('mongodb://localhost/product_overview', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// // let db = mongoose.connection;
-
-// // db.once('open', () => {
-// //   console.log('Connected to MongoDB');
-// //   insertProducts();
-// // );
-
-// // db.on('error', (error) => console.log(error) )
-
-// const Papa = require('papaparse');
-// const { Products, Features, Styles, Skus, Photos } = require('./schema')
+// const { exec } = require("child_process");
 
 // const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
 // const featuresCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/features.csv';
@@ -250,178 +6,213 @@ createTempDocs(skusCSV, 'skus');
 // const skusCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/skus.csv';
 // const photosCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/photos.csv';
 
-// function parseInsert (csvFilePath, collection) {
-//   return new Promise(resolve => {
+// use('products');
+// db.dropDatabase();
 
-//     const options = {
-//       header: true,
-//       skipEmptyLines: true,
-//     //   // fastMode: true,
-//       complete: function(results, parser) {
+// const productAggregation = [
+//   { $set: { _id: '$product_id'}},
+//   { $addFields: {
+//       features: [],
+//       default_style: [],
+//       created_at: new Date(),
+//       modified_at: new Date(),
+//   }},
+//   { $out: 'Products'}
+// ];
 
-//         parser.pause();
-//         console.log(results);
+// // // const styleAggregation = [
+// // //   { $set: { _id: '$style_id'}},
+// // //   { $addFields: {
+// // //       skus: [],
+// // //       photos: [],
+// // //       created_at: new Date(),
+// // //       modified_at: new Date(),
+// // //   }},
+// // //   { $out: 'Styles'}
+// // // ];
 
-//         switch(collection) {
-//           case 'products':
-//             Products.insertMany(results)
-//               .then(res => {
-//                 // console.log('Succesfully inserted Products')
-//                 resolve(console.log('Succesfully inserted Products'))
-//               })
-//               .catch(err => reject('Failed to insert Products', err.message))
-//             break;
-//           case 'styles':
-//             Styles.insertMany(results)
-//             .then(res => resolve('Succesfully inserted Styles'))
-//             .catch(err => reject('Failed to insert Styles', err.message))
-//             break;
-//           case 'features':
-//             Features.insertMany(results)
-//             .then(res => resolve('Succesfully inserted Features'))
-//             .catch(err => reject('Failed to insert Features', err.message))
-//             break;
-//           case 'skus':
-//             Skus.insertMany(results)
-//             .then(res => resolve('Succesfully inserted Skus'))
-//             .catch(err => reject('Failed to insert Skus', err.message))
-//             break;
-//           case 'photos':
-//             Photos.insertMany(results)
-//             .then(res => resolve('Succesfully inserted Photos'))
-//             .catch(err => reject('Failed to insert Photos', err.message))
-//             break;
-//         }
-//         parser.resume();
+// // // const featureAggregation = [
+// // //   { $set: { _id: 'feature_id'}},
+// // //   { $addFields: {
+// // //       created_at: new Date(),
+// // //       modified_at: new Date(),
+// // //   }},
+// // //   { $out: 'Features'}
+// // // ];
+
+// // // const photosAggregation = [
+// // //   { $set: { _id: 'photo_id'}},
+// // //   { $addFields: {
+// // //       created_at: new Date(),
+// // //       modified_at: new Date(),
+// // //   }},
+// // //   { $out: 'Photos'}
+// // // ];
+
+// // // const skutAggregation = [
+// // //   { $set: { _id: 'sku_id'}},
+// // //   { $addFields: {
+// // //       created_at: new Date(),
+// // //       modified_at: new Date(),
+// // //   }},
+// // //   { $out: 'Skus'}
+// // // ];
+
+// const createDocs = (csvFilePath, collection) => {
+//   console.log(`Importing ${collection} data`)
+//   return new Promise (async (resolve, reject) => {
+//     await exec(`mongoimport --uri=mongodb://localhost/products --collection=${collection} --file=${csvFilePath} --type=csv --headerline`, (error, stdout, stderr) => {
+//       if(error) {
+//         console.log(`error: ${error}`);
 //       }
-//     }
-
-//     const dataStream = fs.createReadStream(csvFilePath, {encoding: 'utf8'});
-//     const parseStream = Papa.parse(Papa.NODE_STREAM_INPUT, options)
-
-//     dataStream.pipe(parseStream)
-
-//     // let data = [];
-
-//     // parseStream.on('data', results => {
-//     //   switch(collection) {
-//     //     case 'products':
-//     //       Products.insertMany(results)
-//     //       //   .then(res => {
-//     //       //     // console.log('Succesfully inserted Products')
-//     //       //     resolve(console.log('Succesfully inserted Products'))
-//     //       //   })
-//     //       //   .catch(err => reject('Failed to insert Products', err.message))
-//     //       // break;
-//     //     case 'styles':
-//     //       Styles.insertMany(results)
-//     //       // .then(res => resolve('Succesfully inserted Styles'))
-//     //       // .catch(err => reject('Failed to insert Styles', err.message))
-//     //       // break;
-//     //     case 'features':
-//     //       Features.insertMany(results)
-//     //       // .then(res => resolve('Succesfully inserted Features'))
-//     //       // .catch(err => reject('Failed to insert Features', err.message))
-//     //       // break;
-//     //     case 'skus':
-//     //       Skus.insertMany(results)
-//     //       // .then(res => resolve('Succesfully inserted Skus'))
-//     //       // .catch(err => reject('Failed to insert Skus', err.message))
-//     //       // break;
-//     //     case 'photos':
-//     //       Photos.insertMany(results)
-//     //       // .then(res => resolve('Succesfully inserted Photos'))
-//     //       // .catch(err => reject('Failed to insert Photos', err.message))
-//     //       // break;
-//     //   }
-//     // })
-
-//     // parseStream.on('finish', async () => {
-//     //   // resolve(data);
-//     //   dataStream.destroy();
-//     // })
+//       if (stderr) {
+//         console.log(`stderr: ${stderr}`)
+//       }
+//       console.log(`Successfully imported ${collection} data`);
+//       resolve(collection);
+//     })
 //   })
 // }
 
-// // const parseCSV = (csv, collection) => {
+// const aggregateDocs = (collection) => {
+//   switch (collection) {
+//     case 'Products':
+//       db.Products.aggregate(productAggregation);
+//     case 'Styles':
+//       db.Styles.aggregate(styleAggregation);
+//     case 'Features':
+//       db.Features.aggregate(featureAggregation);
+//     case 'Photos':
+//       db.Photos.aggregate(photosAggregation);
+//     case 'Skus':
+//       db.Skus.aggregate(skusAggregation);
+//   }
 
-// //   return new Promise(async (resolve, reject) => {
-// //     let jsonData = await getJson(csv, collection);
-
-// //     switch(collection) {
-// //       case 'products':
-// //         Products.insertMany(jsonData)
-// //           .then(res => {
-// //             // console.log('Succesfully inserted Products')
-// //             resolve(console.log('Succesfully inserted Products'))
-// //           })
-// //           .catch(err => reject('Failed to insert Products', err.message))
-// //         break;
-// //       case 'styles':
-// //         Styles.insertMany(jsonData)
-// //         .then(res => {
-// //           resolve('Succesfully inserted Styles'))
-// //         .catch(err => reject('Failed to insert Styles', err.message))
-// //         break;
-// //       case 'features':
-// //         Features.insertMany(jsonData)
-// //         .then(res => resolve('Succesfully inserted Features'))
-// //         .catch(err => reject('Failed to insert Features', err.message))
-// //         break;
-// //       case 'skus':
-// //         Skus.insertMany(jsonData)
-// //         .then(res => resolve('Succesfully inserted Skus'))
-// //         .catch(err => reject('Failed to insert Skus', err.message))
-// //         break;
-// //       case 'photos':
-// //         Photos.insertMany(jsonData)
-// //         .then(res => resolve('Succesfully inserted Photos'))
-// //         .catch(err => reject('Failed to insert Photos', err.message))
-// //         break;
-// //     }
-// //   })
-
-// // }
-
-// function insertProducts() {
-//   console.log('Starting Products Insert');
-//   parseInsert(productsCSV, 'products');
-// }
-// function insertStyles() {
-//   console.log('Starting Styles Insert');
-//   return parseInsert(stylesCSV, 'styles');
-// }
-// function insertFeatures() {
-//   console.log('Starting Features Insert');
-//   return parseInsert(featuresCSV, 'features');
-// }
-// function insertSkus() {
-//   console.log('Starting Skus Insert')
-//     return parseInsert(skusCSV, 'skus');
-// }
-// function insertPhotos() {
-//   console.log('Starting Photos Insert');
-//   return parseInsert(photosCSV, 'photos');
+//   console.log(`Successfully aggregated ${collection}`)
 // }
 
-// function insertData() {
-//   return insertProducts().then(insertStyles).then(insertFeatures).then(insertSkus).then(insertPhotos).catch(err => console.log(err.message));
-// }
+// createDocs(productsCSV, 'Products')
+// .then(collection => aggregateDocs(collection));
 
-// mongoose.connect('mongodb://localhost/product_overview', { useNewUrlParser: true, useUnifiedTopology: true });
+// // createDocs(stylesCSV, 'Styles').then((collection) => aggregateDocs(collection));
 
-// let db = mongoose.connection;
+// // createDocs(featuresCSV, 'Features').then((collection) => aggregateDocs(collection));
 
-// db.once('open', () => {
-//   console.log('Connected to MongoDB');
-//   insertProducts();
-// });
+// // createDocs(photosCSV, 'Photos').then((collection) => aggregateDocs(collection));
 
-// db.on('error', (error) => console.log(error) )
-// // insertData();
-// // insertSkus();
-// // insertProducts();
+// // createDocs(skusCSV, 'Skus').then((collection) => aggregateDocs(collection));
 
 
+const { exec } = require("child_process");
+
+const productsCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
+const featuresCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/features.csv';
+const stylesCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/styles.csv';
+const skusCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/skus.csv';
+const photosCSV = '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/photos.csv';
+
+use('products');
+db.dropDatabase();
+
+const productAggregation = [
+  { $set: { _id: '$product_id'}},
+  { $unset: 'product_id'},
+  { $addFields: {
+      features: [],
+      default_style: [],
+      created_at: new Date(),
+      modified_at: new Date(),
+  }},
+  { $out: 'Products'}
+];
+
+const styleAggregation = [
+  { $set: { _id: '$style_id'}},
+  { $unset: 'style_id'},
+  { $addFields: {
+      skus: [],
+      photos: [],
+      created_at: new Date(),
+      modified_at: new Date(),
+  }},
+  { $out: 'Styles'}
+];
+
+const featureAggregation = [
+  { $set: { _id: '$feature_id'}},
+  { $unset: 'feature_id'},
+  { $addFields: {
+      created_at: new Date(),
+      modified_at: new Date(),
+  }},
+  { $out: 'Features'}
+];
+
+const photoAggregation = [
+  { $set: { _id: '$photo_id'}},
+  { $unset: 'photo_id'},
+  { $addFields: {
+      created_at: new Date(),
+      modified_at: new Date(),
+  }},
+  { $out: 'Photos'}
+];
+
+const skuAggregation = [
+  { $set: { _id: '$sku_id'}},
+  { $unset: 'sku_id'},
+  { $addFields: {
+      created_at: new Date(),
+      modified_at: new Date(),
+  }},
+  { $out: 'Skus'}
+];
+
+const createDocs = (csvFilePath, collection) => {
+  return new Promise (async (resolve, reject) => {
+    await exec(`mongoimport --uri=mongodb://localhost/products --collection=${collection} --file=${csvFilePath} --type=csv --headerline`, (error, stdout, stderr) => {
+      if(error) {
+        console.log(`error: ${error}`);
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`)
+      }
+      console.log(`Finished creating ${collection}`);
+      resolve(collection);
+    })
+  })
+}
+
+const aggregateDocs = (collection) => {
+  switch (collection) {
+    case 'Products':
+      db.Products.aggregate(productAggregation);
+    case 'Styles':
+      db.Styles.aggregate(styleAggregation);
+    case 'Features':
+      db.Features.aggregate(featureAggregation);
+    case 'Photos':
+      db.Photos.aggregate(photoAggregation);
+    case 'Skus':
+      db.Skus.aggregate(skuAggregation);
+  }
+
+  console.log(`Successfully aggregated ${collection}`)
+}
+
+createDocs(productsCSV, 'Products')
+.then((collection) => aggregateDocs(collection));
+
+createDocs(stylesCSV, 'Styles')
+.then((collection) => aggregateDocs(collection));
+
+createDocs(featuresCSV, 'Features')
+.then((collection) => aggregateDocs(collection));
+
+createDocs(photosCSV, 'Photos')
+.then((collection) => aggregateDocs(collection));
+
+createDocs(skusCSV, 'Skus')
+.then((collection) => aggregateDocs(collection));
 
 

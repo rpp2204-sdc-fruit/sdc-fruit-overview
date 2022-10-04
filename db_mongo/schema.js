@@ -35,7 +35,7 @@ const StyleSchema = new Schema ({
   photos: [PhotoSchema],
   skus: [SkuSchema],
   created_at: Date,
-  updated_at: Date,
+  updated_at: D.date,
 });
 
 const ProductSchema = new mongoose.Schema ({
@@ -46,7 +46,7 @@ const ProductSchema = new mongoose.Schema ({
   category: String,
   default_price: String,
   features: [FeatureSchema],
-  styles: [StyleSchema],
+  default_style: [StyleSchema],
   created_at: Date,
   updated_at: Date,
 });
