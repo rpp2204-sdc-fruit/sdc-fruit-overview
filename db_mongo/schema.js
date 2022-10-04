@@ -4,6 +4,7 @@ const { Schema, model } = mongoose;
 
 const FeatureSchema = new Schema ({
   feature_id: Number,
+  product_id: Number,
   feature: String,
   value: String,
   created_at: Date,
@@ -12,6 +13,7 @@ const FeatureSchema = new Schema ({
 
 const PhotoSchema = new Schema ({
   photo_id: Number,
+  style_id: Number,
   url: String,
   thumbnail_url: String,
   created_at: Date,
@@ -20,6 +22,7 @@ const PhotoSchema = new Schema ({
 
 const SkuSchema = new Schema ({
   sku_id: Number,
+  style_id: Number,
   quantity: Number,
   size: String,
   created_at: Date,
@@ -28,14 +31,13 @@ const SkuSchema = new Schema ({
 
 const StyleSchema = new Schema ({
   style_id: Number,
+  product_id: Number,
   name: String,
   original_price: String,
   sale_price: String,
   is_default: Boolean,
-  photos: [PhotoSchema],
-  skus: [SkuSchema],
   created_at: Date,
-  updated_at: D.date,
+  updated_at: Date,
 });
 
 const ProductSchema = new mongoose.Schema ({
@@ -45,8 +47,6 @@ const ProductSchema = new mongoose.Schema ({
   description: String,
   category: String,
   default_price: String,
-  features: [FeatureSchema],
-  default_style: [StyleSchema],
   created_at: Date,
   updated_at: Date,
 });
