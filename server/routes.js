@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const products  = require('./product_contollers.js');
-const questions = require('../server/utils/questionsAnswersHelper.js')
+
+const reviews = require('./reviews_controllers.js');
+const products  = require('./products_contollers.js');
+const questions = require('./questions_controllers.js');
 
 
 router.route('/products')
@@ -41,5 +43,20 @@ router.route('/helpful/answer/:answer_id')
 
 router.route('/answer/:answer_id/report')
   .put(questions.reportAnswer)
+
+
+router.route('/reviews')
+  .get(reviews.getReviews)
+  .post(reviews.postReview)
+
+router.route('/reviews/meta')
+  .get(reviews.getMetaData)
+
+router.route('/reviews/:review_id/helpful')
+  .put(reviews.markHelpful)
+
+router.route('/reviews/:review_id/report')
+  .put(reviews.reportReview)
+
 
 module.exports = router;
