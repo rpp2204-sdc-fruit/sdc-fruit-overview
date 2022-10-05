@@ -1,6 +1,6 @@
 const { cloudinary } = require('./cloudinary');
 
-const uploadToCloudinary = (req, res, next) => {
+const uploadToCloudinary = (req, res) => {
   const { photos } = req.body;
 
   if (photos.length === 0) {
@@ -32,11 +32,10 @@ const uploadToCloudinary = (req, res, next) => {
 
     return formatedURLs;
   })
-  .then(formatedURLs => {
-    req.body.photoUrls = formatedURLs;
-    console.log('uploaded photos urls: ', formatedURLs);
-    next();
-  });
+  // .then(formatedURLs => {
+  //   req.body.photoUrls = formatedURLs;
+  //   console.log('uploaded photos urls: ', formatedURLs);
+  // });
 };
 
 module.exports = { uploadToCloudinary };

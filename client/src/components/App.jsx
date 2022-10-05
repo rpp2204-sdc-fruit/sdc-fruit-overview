@@ -50,7 +50,7 @@ function App() {
     <div>
       <Topbar />
       {widgets}
-      <ProductLinks products={products} />
+      {/* <ProductLinks products={products} /> */}
     </div>
   );
 }

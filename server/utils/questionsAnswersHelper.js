@@ -29,16 +29,16 @@ const getQuestions = (req, res, next) => {
           get(page + 1);
         } else {
           res.body = store;
-          next();
+          res.status(200).send(res.body)
         }
       })
-      .catch(next);
-  }
+      .catch(err => res.sendStatus(500).send(err));
+    }
 
   get(1);
 };
 
-const getAnswers = (req, res, next) => {
+const getAnswers = (req, res) => {
   const { question_id, page, count } = req.params;
 
   const url = `${URL}/qa/questions/${question_id}/answers?page=${page}&count=${count}`;
@@ -51,18 +51,15 @@ const getAnswers = (req, res, next) => {
     .get(url, options)
     .then((response) => {
       res.body = response.data;
-
-      next();
+      res.status(200).send(res.body)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
 const addQuestion = (req, res, next) => {
   const url = `${URL}/qa/questions`;
 
   const { body, name, email, product_id } = req.body;
-
-  console.log(req.body);
 
   const data = JSON.stringify({
     body,
@@ -83,14 +80,17 @@ const addQuestion = (req, res, next) => {
 
   axios(options)
     .then(() => {
-      next();
+      res.sendStatus(201)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
-const addAnswer = (req, res, next) => {
+const addAnswer = async (req, res, next) => {
+
+  const URLs = await uploadToCloudinary(req);
+
   const { question_id } = req.params;
-  const { body, name, email, photoUrls } = req.body;
+  const { body, name, email } = req.body;
 
   const url = `${URL}/qa/questions/${question_id}/answers`;
 
@@ -100,8 +100,6 @@ const addAnswer = (req, res, next) => {
     email,
     photos: photoUrls || [],
   });
-
-  console.log(data);
 
   const options = {
     method: 'post',
@@ -115,17 +113,15 @@ const addAnswer = (req, res, next) => {
 
   axios(options)
     .then(() => {
-      next();
+      res.sendStatus(201)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
 const markQuestionAsHelpful = (req, res, next) => {
   const { question_id } = req.params;
 
   const url = `${URL}/qa/questions/${question_id}/helpful`;
-
-  console.log(question_id, url);
 
   const options = {
     method: 'put',
@@ -137,10 +133,10 @@ const markQuestionAsHelpful = (req, res, next) => {
 
   axios(options)
     .then(() => {
-      next();
+      res.sendStatus(204)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
 const markAnswerAsHelpful = (req, res, next) => {
   const { answer_id } = req.params;
@@ -157,10 +153,10 @@ const markAnswerAsHelpful = (req, res, next) => {
 
   axios(options)
     .then(() => {
-      next();
+      res.sendStatus(204)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
 const reportAnswer = (req, res, next) => {
   const { answer_id } = req.params;
@@ -177,10 +173,10 @@ const reportAnswer = (req, res, next) => {
 
   axios(options)
     .then(() => {
-      next();
+      res.sendStatus(204)
     })
-    .catch(next);
-};
+    .catch(err => res.sendStatus(500).send(err));
+  };
 
 module.exports = {
   getQuestions,

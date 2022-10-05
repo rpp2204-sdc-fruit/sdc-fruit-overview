@@ -55,24 +55,24 @@ function Review(props) {
   return (
     <div className="review" data-testid="review">
       <div className="review-tile-top-bar">
-        <div className="review-stars" fromelement="Ratings/Reviews">
+        <div className="review-stars" >
           {starRating}
         </div>
-        <div className="review-date" fromelement="Ratings/Reviews">
+        <div className="review-date" >
           {formatedDate}
         </div>
         <div
           className="review-username"
-          fromelement="Ratings/Reviews"
+
         >{`${username},`}</div>
       </div>
-      <div className="review-summary" fromelement="Ratings/Reviews">
+      <div className="review-summary" >
         {summary}
       </div>
-      <div className="review-body" fromelement="Ratings/Reviews">
+      <div className="review-body" >
         {body}
       </div>
-      <div className="review-photos" fromelement="Ratings/Reviews">
+      <div className="review-photos" >
         {photosDisplay}
       </div>
       <PhotoModal
@@ -83,7 +83,7 @@ function Review(props) {
       />
       {recommended}
       {reviewResponse.current}
-      <div className="review-helpfulness" fromelement="Ratings/Reviews">
+      <div className="review-helpfulness" >
         {helpful}
       </div>
     </div>

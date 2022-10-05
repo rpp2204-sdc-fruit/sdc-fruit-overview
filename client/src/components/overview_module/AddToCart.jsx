@@ -1,10 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-empty */
-/* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -13,7 +6,7 @@ function AddToCart(props) {
   const [outOfStock, setOutOfStock] = useState(true);
   const [sizeSelected, setSizeSelected] = useState('');
   const [quantities, setQuantities] = useState(0);
-  const [quantitySelected, setQuantitySelected] = useState(0);
+  const [quantitySelected, setQuantitySelected] = useState(1);
   const [sku, setSku] = useState('');
 
   useEffect(() => {
@@ -27,11 +20,23 @@ function AddToCart(props) {
 
   const availability = async (skus) => {
     const resultObj = {};
-    const skusArray = await Object.entries(skus);
-    skusArray.forEach((size) => {
-      const sizesArray = Object.entries(size[1]);
-      resultObj[sizesArray[1][1]] = sizesArray[0][1];
-    });
+    let skusArray;
+
+    if (skus) {
+      skusArray = await Object.entries(skus);
+
+      skusArray.forEach((size) => {
+        let sizesArray;
+
+        if (size) {
+         sizesArray = Object.entries(size[1]);
+        }
+
+        resultObj[sizesArray[1][1]] = sizesArray[0][1];
+      });
+    }
+
+
     setStyleAvail(resultObj);
     if (Object.keys(resultObj).length === 0) {
       setOutOfStock(true);
@@ -53,17 +58,14 @@ function AddToCart(props) {
     const drop = document.getElementById('size-dropdown');
     const add = document.getElementById('addto-cart');
     add.addEventListener('mousedown', () => {
-      // eslint-disable-next-line no-restricted-globals
       const evt = event;
       setTimeout(() => {
         drop.dispatchEvent(evt);
       });
     });
-    // drop.dropdown('toggle');
   };
 
   const handleSizeChange = (e) => {
-    // console.log(e.target.value);
     setSizeSelected(e.target.value);
   };
 
@@ -103,12 +105,12 @@ function AddToCart(props) {
         <select
           className="size-dropdown"
           id="size-dropdown"
-          selected="Select Size"
+          defaultValue="Select Size"
           onChange={(e) => {
             handleSizeChange(e);
           }}
         >
-          <option value="" selected disabled hidden>
+          <option value="Select Size" disabled hidden>
             Select Size
           </option>
           {Object.keys(styleAvail).map((size, index) => {

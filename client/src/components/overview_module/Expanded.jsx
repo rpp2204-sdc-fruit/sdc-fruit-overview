@@ -1,7 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import ReactImageZoom from 'react-image-zoom';
@@ -11,18 +7,11 @@ function Expanded(props) {
     img: props.selectedPhoto,
     zoomPosition: 'original',
   };
-  // new ImageZoom(document.getElementById('expanded-img'), options);
+
   return (
     <div className="modalBackground">
       <div className="modalContainer">
-        {/* <button
-          onClick={() => {
-            props.changeViewDefault();
-          }}
-          className="x"
-        >
-          X
-        </button> */}
+
         <Button
           variant="text"
           className="x"
@@ -42,7 +31,6 @@ function Expanded(props) {
             >
               &lt;
             </Button>
-            {/* <img src={props.selectedPhoto} className="expanded-img" /> */}
             <ReactImageZoom {...imageProps} />
             <Button
               onClick={(e) => {
@@ -61,6 +49,7 @@ function Expanded(props) {
                   onClick={(e) => {
                     handleChangePhoto(e);
                   }}
+                  key={index}
                   className="style-other-imgs-selected"
                   src={photo.url}
                   index={index}
@@ -74,6 +63,7 @@ function Expanded(props) {
                 }}
                 className="style-other-imgs"
                 src={photo.url}
+                key={index}
                 index={index}
               />
             );

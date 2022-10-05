@@ -51,7 +51,7 @@ function ReviewsModule({ product_id, product_name }) {
   return (
     <div id="reviews-body">
       <div id="reviews-module">
-        <h2 id="ratings-reviews-header" fromelement="Ratings/Reviews">
+        <h2 id="ratings-reviews-header" >
           {' '}
           Ratings and Reviews{' '}
         </h2>
@@ -81,7 +81,7 @@ function ReviewsModule({ product_id, product_name }) {
         <div id="main-buttons">
           <button
             id="add-review"
-            fromelement="Ratings/Reviews"
+
             className="reviews-btn add-reviews"
             onClick={() => setShowReviewModal((prevState) => !prevState)}
           >
@@ -89,7 +89,7 @@ function ReviewsModule({ product_id, product_name }) {
           </button>
           <button
             id="more-reviews"
-            fromelement="Ratings/Reviews"
+
             className="reviews-btn more-reviews"
             onClick={() =>
               helpers.handleCountShown(

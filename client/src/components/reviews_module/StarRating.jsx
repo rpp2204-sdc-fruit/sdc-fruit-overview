@@ -25,7 +25,7 @@ function StarRating({ rating, handleUserInputs }) {
       formStarRatingDiv.push(
         <FontAwesomeIcon
           id={`star-${i}`}
-          fromelement="Ratings/Reviews"
+
           key={`${i}`}
           className="review-modal-stars"
           icon={rating >= i ? 'fak fa-star-solid' : 'fak fa-star-thin'}
@@ -39,8 +39,8 @@ function StarRating({ rating, handleUserInputs }) {
   }
 
   return (
-    <fieldset id="rate-by-star" fromelement="Ratings/Reviews">
-      <legend id="user-rating" fromelement="Ratings/Reviews">
+    <fieldset id="rate-by-star" >
+      <legend id="user-rating" >
         Overall Rating*
       </legend>
       {formStarRating}

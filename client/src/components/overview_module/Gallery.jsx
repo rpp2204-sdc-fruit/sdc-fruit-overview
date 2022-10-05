@@ -1,8 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -21,18 +16,16 @@ function Gallery(props) {
   useEffect(() => {
     const testAsync = async () => {
       const photos = await selectedStyle.photos;
-      // await console.log('THESE ARE THE PHOTOS', photos);
-      setSelectedPhoto(photos[selectedIndex].url);
+      if (photos) {
+        setSelectedPhoto(photos[selectedIndex].url);
+      }
     };
     testAsync();
-    // setSelectedPhoto(selectedStyle.photos[0].url)
   }, [selectedStyle.photos]);
 
   const handleChangePhoto = (e) => {
     e.preventDefault();
-    // console.log(e.target.src);
     setSelectedPhoto(e.target.src);
-    // console.log(Number(e.target.getAttribute('index')));
     setSelectedIndex(Number(e.target.getAttribute('index')));
   };
 
@@ -44,7 +37,6 @@ function Gallery(props) {
     setView('default');
   };
 
-  // eslint-disable-next-line no-unused-vars
   let minRange = 0;
   let maxRange = 2;
 
@@ -57,11 +49,12 @@ function Gallery(props) {
       setSelectedPhoto(newPhoto);
       if (selectedIndex <= maxRange) {
         console.log('SCROLL UP');
-        // eslint-disable-next-line no-undef
         const container = document.getElementById('photo-container');
-        container.scrollBy({ top: -40, left: 0, behaviour: 'smooth' });
-        maxRange--;
-        minRange--;
+        if (container) {
+          container.scrollBy({ top: -40, left: 0, behaviour: 'smooth' });
+          maxRange--;
+          minRange--;
+        }
       }
     }
   };
@@ -74,7 +67,6 @@ function Gallery(props) {
       const newPhoto = selectedStyle.photos[newIndex].url;
       setSelectedPhoto(newPhoto);
       if (selectedIndex > maxRange) {
-        // eslint-disable-next-line no-undef
         const container = document.getElementById('photo-container');
         container.scrollBy({ top: 40, left: 0, behaviour: 'smooth' });
         maxRange++;
