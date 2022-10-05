@@ -44,7 +44,7 @@ function RatingsBreakdown({
 
         >{`${avgRating.current}`}</div>
         <div id="breakdown-stars" >
-          {/* {starsRatings} */}
+          {starsRatings}
         </div>
       </div>
       <div

@@ -5,9 +5,9 @@ require('../db_mongo/config.js');
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
 
 const app = express();
+const cors = require('cors');
 const compression = require('compression');
 const history = require('connect-history-api-fallback');
 
@@ -19,7 +19,6 @@ app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 app.use('/', require('./routes.js'))
 
-
 //POST interactions
 app.post('/interactions', (req, res) => {
   postInteractions(req.body, (error) => {
@@ -29,6 +28,10 @@ app.post('/interactions', (req, res) => {
       res.sendStatus(201);
     }
   });
+});
+
+app.use((err, req, res) => {
+  res.status(500).send('Express error:',  err.message );
 });
 
 const port = process.env.PORT || 8000;
