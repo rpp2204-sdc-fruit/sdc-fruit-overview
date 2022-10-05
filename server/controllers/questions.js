@@ -1,13 +1,13 @@
 require('dotenv').config();
 const axios = require('axios');
-const { uploadToCloudinary } = require('./utils/uploadToCloudinary.js');
+const { uploadToCloudinary } = require('../utils/uploadToCloudinary.js');
 
 const { URL, TOKEN } = process.env;
 
 // only have to take care of one request here
 // client will be in charge of sending mutiple requests
 
-const getQuestions = (req, res, next) => {
+const getQuestions = (req, res) => {
   const { product_id } = req.params;
   let store = [];
   const count = 100;
@@ -55,7 +55,7 @@ const getAnswers = (req, res) => {
     .catch(err => res.sendStatus(500).send(err));
   };
 
-const addQuestion = (req, res, next) => {
+const addQuestion = (req, res) => {
   const url = `${URL}/qa/questions`;
 
   const { body, name, email, product_id } = req.body;
@@ -84,7 +84,7 @@ const addQuestion = (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
   };
 
-const addAnswer = async (req, res, next) => {
+const addAnswer = async (req, res) => {
 
   const URLs = await uploadToCloudinary(req);
 
@@ -117,7 +117,7 @@ const addAnswer = async (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
   };
 
-const markQuestionAsHelpful = (req, res, next) => {
+const markQuestionAsHelpful = (req, res) => {
   const { question_id } = req.params;
 
   const url = `${URL}/qa/questions/${question_id}/helpful`;
@@ -137,7 +137,7 @@ const markQuestionAsHelpful = (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
   };
 
-const markAnswerAsHelpful = (req, res, next) => {
+const markAnswerAsHelpful = (req, res) => {
   const { answer_id } = req.params;
 
   const url = `${URL}/qa/answers/${answer_id}/helpful`;
@@ -157,7 +157,7 @@ const markAnswerAsHelpful = (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
   };
 
-const reportAnswer = (req, res, next) => {
+const reportAnswer = (req, res) => {
   const { answer_id } = req.params;
 
   const url = `${URL}/qa/answers/${answer_id}/report`;

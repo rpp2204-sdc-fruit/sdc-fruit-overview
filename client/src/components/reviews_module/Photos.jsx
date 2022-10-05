@@ -5,7 +5,6 @@ function Photos({ photos, handleUserInputs }) {
 
   function handlePhotos(e) {
     let files = e.target.files;
-    console.log(files);
     let fileURLs = [];
 
     if (files.length + photos.length > 5) {
@@ -21,7 +20,6 @@ function Photos({ photos, handleUserInputs }) {
       img.width = 80;
       img.onclick = function(e) {
         e.target.remove();
-        console.log(files);
       }
 
       images.appendChild(img);

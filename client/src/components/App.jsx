@@ -33,7 +33,7 @@ function App() {
         setProducts([...productList]);
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error (error);
       });
   }, []);
 

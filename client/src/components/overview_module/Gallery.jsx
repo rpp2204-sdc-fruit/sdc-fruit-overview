@@ -87,9 +87,9 @@ function Gallery(props) {
             className="main-img"
             src={selectedPhoto}
             onClick={handleChangeViewExpanded}
+            alt={"Image Unavailable"}
           />
           <div className="sidebar">
-            {/* <button className="arrow-up">UP</button> */}
             {selectedIndex !== 0 ? (
               <KeyboardArrowUpIcon
                 className="arrow-up"
@@ -108,6 +108,7 @@ function Gallery(props) {
                       src={photo.url}
                       index={index}
                       key={index}
+                      alt={"Image Unavailable"}
                     />
                   );
                 }

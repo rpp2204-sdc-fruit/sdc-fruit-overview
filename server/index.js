@@ -19,25 +19,26 @@ app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 app.use('/', require('./routes.js'))
 
-//POST interactions
-app.post('/interactions', (req, res) => {
-  postInteractions(req.body, (error) => {
-    if (error) {
-      res.sendStatus(422);
-    } else {
-      res.sendStatus(201);
-    }
-  });
-});
+// //POST interactions
+// app.post('/interactions', (req, res) => {
+//   postInteractions(req.body, (error) => {
+//     if (error) {
+//       res.sendStatus(422);
+//     } else {
+//       res.sendStatus(201);
+//     }
+//   });
+// });
 
-app.use((err, req, res) => {
-  res.status(500).send('Express error:',  err.message );
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  next(err)
 });
 
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
 
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductInfo from './ProductInfo.jsx';
@@ -6,7 +5,6 @@ import Styles from './Styles.jsx';
 import Gallery from './Gallery.jsx';
 import Slogan from './Slogan.jsx';
 
-// 71697
 function Overview(props) {
   const [product, setProduct] = useState({});
   const [styles, setStyles] = useState({
@@ -70,7 +68,6 @@ function Overview(props) {
   }, [styles]);
 
   const changeStyleSelected = (style) => {
-    // console.log(`The selected style is: ${JSON.stringify(style)}`);
     setSelectedStyle(style);
   };
 
@@ -78,12 +75,6 @@ function Overview(props) {
     return (
       <div id="main-container" className="main-container">
         <div data-testid="overview" className="overview">
-          {/* <Styles
-            // product={product}
-            // styles={styles.results}
-            // changeStyleSelected={changeStyleSelected}
-            // style={selectedStyle}
-          /> */}
           <Gallery style={selectedStyle} />
           <div className="new-right">
             <ProductInfo

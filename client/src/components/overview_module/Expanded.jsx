@@ -6,6 +6,7 @@ function Expanded(props) {
   const imageProps = {
     img: props.selectedPhoto,
     zoomPosition: 'original',
+    alt: 'Image not Available'
   };
 
   return (
@@ -53,6 +54,7 @@ function Expanded(props) {
                   className="style-other-imgs-selected"
                   src={photo.url}
                   index={index}
+                  alt={"Image Unavailable"}
                 />
               );
             }
@@ -65,6 +67,7 @@ function Expanded(props) {
                 src={photo.url}
                 key={index}
                 index={index}
+                alt={"Image Unavailable"}
               />
             );
           })}

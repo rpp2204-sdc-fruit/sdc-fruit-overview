@@ -1,7 +1,8 @@
 require('dotenv').config();
-const db = require('../db_mongo/config.js');
+const db = require('../../db_mongo/config.js');
+
+const { Product, Style } = require('../../db_mongo/models.js');
 const axios = require('axios');
-const { Product, Style } = require('../db_mongo/models.js');
 
 const { TOKEN, URL } = process.env
 

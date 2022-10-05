@@ -23,9 +23,6 @@ function ProductInfo(props) {
     } else {
       setPrice({ amount: style.original_price, discounted: false });
     }
-    // console.log(
-    //   `Just changed the price to: ${price.amount} and ${price.discounted}`
-    // );
   };
 
   useEffect(() => {
@@ -38,27 +35,19 @@ function ProductInfo(props) {
     axios
       .get('/reviews/meta', { params: { product_id: props.product.id } })
       .then((data) => {
-        // console.log('The reviews meta data is: ', data.data.ratings);
-        // console.log(`The avg rating is: ${getAvgRating(data.data.ratings)}`)
+
         setAvgRating(getAvgRating(data.data.ratings).avg);
         setTotalReviews(getAvgRating(data.data.ratings).reviewsCount);
       });
   }, []);
 
   useEffect(() => {
-    // console.log(`You changed the selected style to ${props.style.name}`);
     setSelectedStyle(props.style);
   }, [props.style]);
 
   useEffect(() => {
     setStyles(props.styles.results);
   }, [props.styles]);
-
-  // useEffect(() => {
-  //   const selected = findDefaultStyle(styles);
-  //   console.log(`The selected style is: ${selected}`);
-  //   setSelectedStyle(selected);
-  // }, [styles]);
 
   if (
     Object.keys(props.product).length &&
@@ -106,7 +95,7 @@ function ProductInfo(props) {
         </div>
         <div>{props.product.category}</div>
         <h2>{props.product.name}</h2>
-        <h4>{props.product.slogan}</h4>
+        <h3>{props.product.slogan}</h3>
         <div>{selectedStyle.name}</div>
         <div>
           {price.discounted ? (

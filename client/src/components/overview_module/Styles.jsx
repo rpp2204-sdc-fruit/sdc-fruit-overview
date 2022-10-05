@@ -47,6 +47,7 @@ function Styles(props) {
                     }}
                     value={JSON.stringify(style)}
                     src={style.photos[0].thumbnail_url}
+                    alt={'Image Not Available'}
                     key={index}
                   />
                 );
@@ -60,6 +61,7 @@ function Styles(props) {
                   }}
                   value={JSON.stringify(style)}
                   src={style.photos[0].thumbnail_url}
+                  alt={'Image Not Available'}
                   key={index}
                 />
               );

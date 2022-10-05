@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const reviews = require('./reviews_controllers.js');
-const products  = require('./products_contollers.js');
-const questions = require('./questions_controllers.js');
+const questions = require('./controllers/questions.js');
+const products = require('./controllers/products.js');
+const reviews = require('./controllers/reviews.js');
+const global = require('./controllers/global.js');
 
-
+//***** Product Routes *****//
 router.route('/products')
-  .get(products.readAllProducts)
+.get(products.readAllProducts)
 
 router.route('/products/:product_id')
   .get(products.readProduct)
@@ -22,7 +23,7 @@ router.route('/cart/:sku/:qty')
   .post(products.createCart)
 
 
-
+//***** Question Routes *****//
 router.route('/questions/:product_id')
 .get(questions.getQuestions)
 
@@ -45,6 +46,7 @@ router.route('/answer/:answer_id/report')
   .put(questions.reportAnswer)
 
 
+//***** Review Routes *****//
 router.route('/reviews')
   .get(reviews.getReviews)
   .post(reviews.postReview)
@@ -57,6 +59,10 @@ router.route('/reviews/:review_id/helpful')
 
 router.route('/reviews/:review_id/report')
   .put(reviews.reportReview)
+
+//***** Global Routes *****//
+router.route('/interactions')
+  .put(global.updateInteractions)
 
 
 module.exports = router;
