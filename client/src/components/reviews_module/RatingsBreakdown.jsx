@@ -7,6 +7,7 @@ function RatingsBreakdown({
   characteristics,
   setCurrentFilters,
   currentFilters,
+  handleRatings,
 }) {
   const percentRecommended = useRef(0);
   const totalReviews = useRef(0);
@@ -29,6 +30,7 @@ function RatingsBreakdown({
       helpers.handleRatings(meta.ratings, (avg, reviewsCount) => {
         totalReviews.current = reviewsCount;
         avgRating.current = avg;
+        handleRatings(avg, reviewsCount);
       });
       helpers.handleRecommended(meta.recommended, (avg) => {
         percentRecommended.current = avg;

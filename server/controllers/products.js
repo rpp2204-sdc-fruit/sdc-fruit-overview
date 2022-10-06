@@ -1,55 +1,38 @@
 require('dotenv').config();
+const axios = require('axios');
 const db = require('../../db_mongo/config.js');
 
-const { Product, Style } = require('../../db_mongo/models.js');
-const axios = require('axios');
+const { Products, Styles } = require('../../db_mongo/models.js');
 
-const { TOKEN, URL } = process.env
+const { TOKEN, URL } = process.env;
 
-function readAllProducts (req, res) {
-  axios
-  .get(URL + req.url, {
-    headers: {
-      Authorization: TOKEN,
-    },
-  })
-  .then((products) => {
-    res.status(200).send(products.data);
-  })
-  .catch(error => console.log('Error reading all products', error));
+function readAllProducts(req, res) {
+  Products.aggregate([{ $sample: { size: 1 } }])
+    .then((entry) => res.status(200).send(entry))
+    .catch((error) => res.status(500).send(error));
 }
 
-function readProduct (req, res) {
-  axios
-  .get(URL + req.url, {
-    headers: {
-      Authorization: TOKEN,
-    },
-  })
-  .then((product_info) => {
-    res.status(200).send(product_info.data);
-  })
-  .catch(error => console.log('Error reading product:',  error));
+function readProduct(req, res) {
+  const product_id = req.url.split('/')[2];
+
+  Products.find({ product_id: `${product_id}` })
+    .then((product) => res.status(200).send(product))
+    .catch((error) => res.status(500).send(error));
 }
 
-function readStyle (req, res) {
-  axios
-    .get(URL + req.url, {
-      headers: {
-        Authorization: TOKEN,
-      },
-    })
-    .then((product_styles) => {
-      res.send(product_styles.data);
-    })
-    .catch(error => console.log('Error reading products:', error));
+function readStyle(req, res) {
+  const product_id = req.url.split('/')[2];
+
+  Styles.find({ product_id })
+    .then((styles) => res.status(200).send(styles))
+    .catch((error) => res.status(500).send(error));
 }
 
-function readRelated (req, res) {
+function readRelated(req, res) {
   // res.sendStatus(200)
 }
 
-function createCart (req, res) {
+function createCart(req, res) {
   // res.sendStatus(200)
 }
 
@@ -59,4 +42,4 @@ module.exports = {
   readStyle,
   readRelated,
   createCart,
-}
+};

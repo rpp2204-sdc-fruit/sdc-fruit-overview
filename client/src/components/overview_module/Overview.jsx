@@ -5,27 +5,25 @@ import Styles from './Styles.jsx';
 import Gallery from './Gallery.jsx';
 import Slogan from './Slogan.jsx';
 
-function Overview(props) {
-  const [product, setProduct] = useState({});
-  const [styles, setStyles] = useState({
-    product_id: '',
-    results: [
-      {
-        style_id: 1,
-        name: '',
-        original_price: '',
-        sale_price: 0,
-        default: true,
-        photos: [
-          {
-            thumbnail_url: '',
-            url: '',
-          },
-        ],
-        skus: {},
-      },
-    ],
-  });
+function Overview({ product, avgRating, totalReviews }) {
+  const [styles, setStyles] = useState([
+    {
+      style_id: 1,
+      product_id: 1,
+      name: '',
+      original_price: '',
+      sale_price: 0,
+      default: true,
+      photos: [
+        {
+          thumbnail_url: '',
+          url: '',
+        },
+      ],
+      skus: [],
+    },
+  ]);
+
   const [selectedStyle, setSelectedStyle] = useState({
     style_id: 1,
     name: '',
@@ -38,34 +36,20 @@ function Overview(props) {
         url: '',
       },
     ],
-    skus: {},
+    skus: [],
   });
 
   useEffect(() => {
-    axios.get(`/products/${props.product_id}`).then((data) => {
-      // console.log(data.data);
-      setProduct(data.data);
-    });
-    axios.get(`/products/${props.product_id}/styles`).then((data) => {
-      // console.log(data.data);
-      setStyles(data.data);
-    });
-    axios.get(`/products/${props.product_id}/styles`).then((data) => {
-      setStyles(data.data);
-    });
-  }, [props.product_id]);
-
-  useEffect(() => {
-    let def = {};
-    for (let i = 0; i < styles.results.length; i++) {
-      if (styles.results[i]['default?']) {
-        def = styles.results[i];
-        styles.results.splice(i, 1);
-        styles.results.unshift(def);
-      }
+    if (product.product_id) {
+      axios
+        .get(`/products/${product.product_id}/styles`)
+        .then((product_styles) => {
+          console.log(product_styles.data[0]);
+          setStyles(product_styles.data);
+          setSelectedStyle(product_styles.data[0]);
+        });
     }
-    setSelectedStyle(def);
-  }, [styles]);
+  }, [product]);
 
   const changeStyleSelected = (style) => {
     setSelectedStyle(style);
@@ -78,15 +62,17 @@ function Overview(props) {
           <Gallery style={selectedStyle} />
           <div className="new-right">
             <ProductInfo
-              product_id={props.product_id}
+              product_id={product.product_id}
               product={product}
               features={product.features}
               style={selectedStyle}
               styles={styles}
+              avgRating={avgRating}
+              totalReviews={totalReviews}
             />
             <Styles
               product={product}
-              styles={styles.results}
+              styles={styles}
               changeStyleSelected={changeStyleSelected}
               style={selectedStyle}
             />

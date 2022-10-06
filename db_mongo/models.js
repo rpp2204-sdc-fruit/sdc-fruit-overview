@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const { Schema, model } = mongoose;
-
-const FeatureSchema = new Schema ({
+const FeatureSchema = new mongoose.Schema({
   feature_id: Number,
   product_id: Number,
   feature: String,
@@ -11,25 +9,25 @@ const FeatureSchema = new Schema ({
   updated_at: Date,
 });
 
-const PhotoSchema = new Schema ({
+const PhotoSchema = new mongoose.Schema({
   photo_id: Number,
   style_id: Number,
   url: String,
   thumbnail_url: String,
   created_at: Date,
   updated_at: Date,
-})
+});
 
-const SkuSchema = new Schema ({
+const SkuSchema = new mongoose.Schema({
   sku_id: Number,
   style_id: Number,
   quantity: Number,
   size: String,
   created_at: Date,
   updated_at: Date,
-})
+});
 
-const StyleSchema = new Schema ({
+const StyleSchema = new mongoose.Schema({
   style_id: Number,
   product_id: Number,
   name: String,
@@ -40,7 +38,7 @@ const StyleSchema = new Schema ({
   updated_at: Date,
 });
 
-const ProductSchema = new mongoose.Schema ({
+const ProductSchema = new mongoose.Schema({
   product_id: Number,
   name: String,
   slogan: String,
@@ -51,16 +49,16 @@ const ProductSchema = new mongoose.Schema ({
   updated_at: Date,
 });
 
-let Product = model("Product", ProductSchema);
-let Feature = model("Feature", FeatureSchema);
-let Style = model("Style", StyleSchema);
-let Photo = model("Photo", PhotoSchema);
-let Sku = model("Sku", SkuSchema);
+const Products = mongoose.model('Products', ProductSchema);
+const Features = mongoose.model('Features', FeatureSchema);
+const Styles = mongoose.model('Styles', StyleSchema);
+const Photos = mongoose.model('Photos', PhotoSchema);
+const Skus = mongoose.model('Skus', SkuSchema);
 
 module.exports = {
-  Product,
-  Feature,
-  Style,
-  Photo,
-  Sku,
-}
+  Products,
+  Styles,
+  Features,
+  Photos,
+  Skus,
+};

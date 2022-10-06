@@ -5,7 +5,7 @@ import SubmitReview from './SubmitReview.jsx';
 import ReviewsList from './ReviewsList.jsx';
 // import { handleInteraction } from '../../interactionHandler.js'
 
-function ReviewsModule({ product_id, product_name }) {
+function ReviewsModule({ product_id, product_name, handleRatings }) {
   const [reviewsDisplayed, setReviewsDisplayed] = useState(initialState.review);
   const [currentFilters, setCurrentFilters] = useState(initialState.filters);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -24,7 +24,7 @@ function ReviewsModule({ product_id, product_name }) {
       count,
     };
 
-    if (product_id !== 12345) {
+    if (product_id) {
       helpers.getReviews(params, currentFilters, (reviewData) => {
         reviews.current = reviewData;
         reviewCount.current = reviewData.length;
@@ -61,6 +61,7 @@ function ReviewsModule({ product_id, product_name }) {
           characteristics={characteristics}
           setCurrentFilters={setCurrentFilters}
           currentFilters={currentFilters}
+          handleRatings={handleRatings}
         />
         {reviewsDisplayed.length === 0 ? (
           ''

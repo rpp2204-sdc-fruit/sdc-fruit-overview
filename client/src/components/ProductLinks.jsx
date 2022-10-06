@@ -7,7 +7,7 @@ export default function ProductLinks({ products }) {
       <h3>Products</h3>
 
       {products.map((product) => (
-        <Link key={product.id} to={`/${product.id}`}>
+        <Link key={product.id} to={`/$product_id=${product.id}`}>
           <div>Product Name: {product.name}</div>
         </Link>
       ))}

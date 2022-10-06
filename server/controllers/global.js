@@ -1,15 +1,15 @@
 require('dotenv').config();
 const axios = require('axios');
+
 const { URL, TOKEN } = process.env;
 
-function updateInteractions (req, res) {
-
+function updateInteractions(req, res) {
   const { element, widget, time } = req.body;
 
   const data = JSON.stringify({
     element,
     widget,
-    time
+    time,
   });
 
   const options = {
@@ -23,10 +23,10 @@ function updateInteractions (req, res) {
   };
 
   axios(options)
-    .then(response => res.sendStatus(201))
-    .catch(error => res.sendStatus(500).send({Error: error}))
+    .then(() => res.sendStatus(201))
+    .catch((error) => res.status(500).send({ Error: error }));
 }
 
 module.exports = {
   updateInteractions,
-}
+};

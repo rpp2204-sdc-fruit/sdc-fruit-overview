@@ -9,11 +9,11 @@ import { Link } from 'react-scroll';
 import getAvgRating from './helper-functions/helper.js';
 import findDefaultStyle from './helper-functions/findDefaultStyle.js';
 
-function ProductInfo(props) {
-  const [avgRating, setAvgRating] = useState(0);
-  const [totalReviews, setTotalReviews] = useState(0);
+function ProductInfo({ product_id, product, features, style, styles, avgRating, totalReviews }) {
+  // const [avgRating, setAvgRating] = useState(0);
+  // const [totalReviews, setTotalReviews] = useState(0);
   const [selectedStyle, setSelectedStyle] = useState({});
-  const [styles, setStyles] = useState({});
+  const [proudctStyles, setProductStyles] = useState({});
 
   const [price, setPrice] = useState({ amount: '', discounted: false });
 
@@ -31,26 +31,26 @@ function ProductInfo(props) {
 
   // Make a request to get the reviews information, calculate avg, and set state
 
-  useEffect(() => {
-    axios
-      .get('/reviews/meta', { params: { product_id: props.product.id } })
-      .then((data) => {
+  // useEffect(() => {
+  //   axios
+  //     .get('/reviews/meta', { params: { product_id: props.product.id } })
+  //     .then((data) => {
 
-        setAvgRating(getAvgRating(data.data.ratings).avg);
-        setTotalReviews(getAvgRating(data.data.ratings).reviewsCount);
-      });
-  }, []);
-
-  useEffect(() => {
-    setSelectedStyle(props.style);
-  }, [props.style]);
+  //       setAvgRating(getAvgRating(data.data.ratings).avg);
+  //       setTotalReviews(getAvgRating(data.data.ratings).reviewsCount);
+  //     });
+  // }, []);
 
   useEffect(() => {
-    setStyles(props.styles.results);
-  }, [props.styles]);
+    setSelectedStyle(style);
+  }, [style]);
+
+  useEffect(() => {
+    setProductStyles(styles);
+  }, [styles]);
 
   if (
-    Object.keys(props.product).length &&
+    Object.keys(product).length &&
     avgRating !== null &&
     Object.keys(selectedStyle).length
   ) {
@@ -93,9 +93,9 @@ function ProductInfo(props) {
             Read all &#40;{totalReviews}&#41; reviews{' '}
           </Link>
         </div>
-        <div>{props.product.category}</div>
-        <h2>{props.product.name}</h2>
-        <h3>{props.product.slogan}</h3>
+        <div>{product.category}</div>
+        <h2>{product.name}</h2>
+        <h3>{product.slogan}</h3>
         <div>{selectedStyle.name}</div>
         <div>
           {price.discounted ? (

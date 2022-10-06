@@ -3,25 +3,21 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Expanded from './Expanded.jsx';
 
-function Gallery(props) {
-  const [selectedStyle, setSelectedStyle] = useState({});
+function Gallery({ style }) {
+  // const [style, setstyle] = useState({});
   const [selectedPhoto, setSelectedPhoto] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [view, setView] = useState('default');
 
   useEffect(() => {
-    setSelectedStyle(props.style);
-  }, [props.style]);
-
-  useEffect(() => {
     const testAsync = async () => {
-      const photos = await selectedStyle.photos;
+      const photos = await style.photos;
       if (photos) {
         setSelectedPhoto(photos[selectedIndex].url);
       }
     };
     testAsync();
-  }, [selectedStyle.photos]);
+  }, [style.photos]);
 
   const handleChangePhoto = (e) => {
     e.preventDefault();
@@ -45,7 +41,7 @@ function Gallery(props) {
     if (selectedIndex > 0) {
       const newIndex = selectedIndex - 1;
       setSelectedIndex(newIndex);
-      const newPhoto = selectedStyle.photos[newIndex].url;
+      const newPhoto = style.photos[newIndex].url;
       setSelectedPhoto(newPhoto);
       if (selectedIndex <= maxRange) {
         console.log('SCROLL UP');
@@ -61,10 +57,10 @@ function Gallery(props) {
 
   const nextPhoto = (e) => {
     e.preventDefault();
-    if (selectedIndex < selectedStyle.photos.length - 1) {
+    if (selectedIndex < style.photos.length - 1) {
       const newIndex = selectedIndex + 1;
       setSelectedIndex(newIndex);
-      const newPhoto = selectedStyle.photos[newIndex].url;
+      const newPhoto = style.photos[newIndex].url;
       setSelectedPhoto(newPhoto);
       if (selectedIndex > maxRange) {
         const container = document.getElementById('photo-container');
@@ -75,10 +71,10 @@ function Gallery(props) {
     }
   };
 
-  if (Object.keys(selectedStyle).length) {
+  if (Object.keys(style).length) {
     if (
       view === 'default' &&
-      Object.keys(selectedStyle.photos).length &&
+      Object.keys(style.photos).length &&
       selectedPhoto !== null
     ) {
       return (
@@ -97,7 +93,7 @@ function Gallery(props) {
               />
             ) : null}
             <div className="photo-container" id="photo-container">
-              {selectedStyle.photos.map((photo, index) => {
+              {style.photos.map((photo, index) => {
                 if (index === selectedIndex) {
                   return (
                     <img
@@ -125,7 +121,7 @@ function Gallery(props) {
                 );
               })}
             </div>
-            {selectedIndex < selectedStyle.photos.length - 1 ? (
+            {selectedIndex < style.photos.length - 1 ? (
               <KeyboardArrowDownIcon
                 className="arrow-down"
                 onClick={nextPhoto}
@@ -141,7 +137,7 @@ function Gallery(props) {
           nextPhoto={nextPhoto}
           previousPhoto={previousPhoto}
           changeViewDefault={handleChangeViewDefault}
-          photos={selectedStyle.photos}
+          photos={style.photos}
           selectedPhoto={selectedPhoto}
           changeSelectedPhoto={handleChangePhoto}
           selectedIndex={selectedIndex}

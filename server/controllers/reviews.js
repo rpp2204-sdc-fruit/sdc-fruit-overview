@@ -2,7 +2,6 @@ require('dotenv').config();
 const axios = require('axios');
 const { uploadToCloudinary } = require('../utils/uploadToCloudinary.js');
 
-
 const { URL, TOKEN } = process.env;
 
 const getReviews = (req, res) => {
@@ -30,12 +29,11 @@ const getMetaData = (req, res) => {
   };
 
   axios(options)
-  .then((response) => res.status(200).send(response.data))
-  .catch((error) => res.status(500).send(error));
+    .then((response) => res.status(200).send(response.data))
+    .catch((error) => res.status(500).send(error));
 };
 
 const postReview = (req, res) => {
-
   const photoUrls = uploadToCloudinary(req);
 
   const {
@@ -72,8 +70,8 @@ const postReview = (req, res) => {
   };
 
   axios(options)
-  .then((response) => res.status(201))
-  .catch((error) => res.status(500).send(error));
+    .then(() => res.sendStatus(201))
+    .catch((error) => res.status(500).send(error));
 };
 
 const markHelpful = (req, res) => {
@@ -88,8 +86,8 @@ const markHelpful = (req, res) => {
   };
 
   axios(options)
-  .then((response) => res.status(201))
-  .catch((error) => res.status(500).send(error));
+    .then(() => res.sendStatus(201))
+    .catch((error) => res.status(500).send(error));
 };
 
 const reportReview = (req, res) => {
@@ -104,8 +102,8 @@ const reportReview = (req, res) => {
   };
 
   axios(options)
-  .then((response) => res.status(201))
-  .catch((error) => res.status(500).send(error));
+    .then(() => res.sendStatus(201))
+    .catch((error) => res.status(500).send(error));
 };
 
 module.exports = {

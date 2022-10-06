@@ -28,11 +28,11 @@ const getQuestions = (req, res) => {
           get(page + 1);
         } else {
           res.body = store;
-          res.status(200).send(res.body)
+          res.status(200).send(res.body);
         }
       })
-      .catch(err => res.sendStatus(500).send(err));
-    }
+      .catch((err) => res.status(500).send(err));
+  }
 
   get(1);
 };
@@ -50,10 +50,10 @@ const getAnswers = (req, res) => {
     .get(url, options)
     .then((response) => {
       res.body = response.data;
-      res.status(200).send(res.body)
+      res.status(200).send(res.body);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 const addQuestion = (req, res) => {
   const url = `${URL}/qa/questions`;
@@ -79,13 +79,12 @@ const addQuestion = (req, res) => {
 
   axios(options)
     .then(() => {
-      res.sendStatus(201)
+      res.sendStatus(201);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 const addAnswer = async (req, res) => {
-
   const URLs = await uploadToCloudinary(req);
 
   const { question_id } = req.params;
@@ -97,7 +96,7 @@ const addAnswer = async (req, res) => {
     body,
     name,
     email,
-    photos: photoUrls || [],
+    photos: URLs || [],
   });
 
   const options = {
@@ -112,10 +111,10 @@ const addAnswer = async (req, res) => {
 
   axios(options)
     .then(() => {
-      res.sendStatus(201)
+      res.sendStatus(201);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 const markQuestionAsHelpful = (req, res) => {
   const { question_id } = req.params;
@@ -132,10 +131,10 @@ const markQuestionAsHelpful = (req, res) => {
 
   axios(options)
     .then(() => {
-      res.sendStatus(204)
+      res.sendStatus(204);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 const markAnswerAsHelpful = (req, res) => {
   const { answer_id } = req.params;
@@ -152,10 +151,10 @@ const markAnswerAsHelpful = (req, res) => {
 
   axios(options)
     .then(() => {
-      res.sendStatus(204)
+      res.sendStatus(204);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 const reportAnswer = (req, res) => {
   const { answer_id } = req.params;
@@ -172,10 +171,10 @@ const reportAnswer = (req, res) => {
 
   axios(options)
     .then(() => {
-      res.sendStatus(204)
+      res.sendStatus(204);
     })
-    .catch(err => res.sendStatus(500).send(err));
-  };
+    .catch((err) => res.status(500).send(err));
+};
 
 module.exports = {
   getQuestions,

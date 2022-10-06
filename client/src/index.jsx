@@ -12,7 +12,8 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/:id" element={<App />} />
+      <Route path="/" element={<App />} />
+      <Route path=":product_id" element={<App />} />
     </Routes>
   </BrowserRouter>
 );
