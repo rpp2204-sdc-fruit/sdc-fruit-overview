@@ -41,13 +41,10 @@ function Overview({ product, avgRating, totalReviews }) {
 
   useEffect(() => {
     if (product.product_id) {
-      axios
-        .get(`/products/${product.product_id}/styles`)
-        .then((product_styles) => {
-          console.log(product_styles.data[0]);
-          setStyles(product_styles.data);
-          setSelectedStyle(product_styles.data[0]);
-        });
+      axios.get(`/products/${product.product_id}/styles`).then((response) => {
+        setStyles(response.data.styles);
+        setSelectedStyle(response.data.default);
+      });
     }
   }, [product]);
 
@@ -71,7 +68,6 @@ function Overview({ product, avgRating, totalReviews }) {
               totalReviews={totalReviews}
             />
             <Styles
-              product={product}
               styles={styles}
               changeStyleSelected={changeStyleSelected}
               style={selectedStyle}

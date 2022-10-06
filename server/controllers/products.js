@@ -24,7 +24,19 @@ function readStyle(req, res) {
   const product_id = req.url.split('/')[2];
 
   Styles.find({ product_id })
-    .then((styles) => res.status(200).send(styles))
+    .then((styles) => {
+      const { length } = styles;
+      for (let i = 0; i < length; i++) {
+        if (styles[i].is_default) {
+        const response = {
+            styles,
+            default: styles[i],
+          }
+          res.status(200).send(response);
+        }
+      }
+    })
+
     .catch((error) => res.status(500).send(error));
 }
 

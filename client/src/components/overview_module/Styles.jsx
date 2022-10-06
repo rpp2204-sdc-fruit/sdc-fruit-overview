@@ -3,28 +3,28 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import AddToCart from './AddToCart.jsx';
-import Gallery from './Gallery.jsx';
+// import Gallery from './Gallery.jsx';
 
-function Styles(props) {
+function Styles({ styles, changeStyleSelected, style }) {
   const [selectedStyle, setSelectedStyle] = useState({});
 
   useEffect(() => {
-    setSelectedStyle(props.style);
+    setSelectedStyle(style);
   }, []);
 
   useEffect(() => {
-    setSelectedStyle(props.style);
-    props.changeStyleSelected(props.style);
-  }, [props.styles]);
+    setSelectedStyle(style);
+    changeStyleSelected(style);
+  }, [styles]);
 
   const handleSelect = (e) => {
     e.preventDefault();
     // console.log(JSON.parse(e.target.getAttribute('value')));
     setSelectedStyle(JSON.parse(e.target.getAttribute('value')));
-    props.changeStyleSelected(JSON.parse(e.target.getAttribute('value')));
+    changeStyleSelected(JSON.parse(e.target.getAttribute('value')));
   };
 
-  if (props.styles.length) {
+  if (styles.length) {
     // console.log(`There are ${props.styles.length} styles`);
     return (
       <div className="gallery-styles-container">
@@ -37,7 +37,7 @@ function Styles(props) {
             data-testid="style-selector"
             className="product_overview_style_selector"
           >
-            {props.styles.map((style, index) => {
+            {styles.map((style, index) => {
               if (style.name === selectedStyle.name) {
                 return (
                   <img
