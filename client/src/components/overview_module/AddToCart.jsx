@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function AddToCart({ style }) {
+function AddToCart({ style, current }) {
   const [styleAvail, setStyleAvail] = useState({});
   const [outOfStock, setOutOfStock] = useState(true);
   const [sizeSelected, setSizeSelected] = useState('');
@@ -11,7 +11,9 @@ function AddToCart({ style }) {
 
   useEffect(() => {
     const styleSkus = style.skus;
-    console.log('style', style);
+    console.log('Cart style: ', style);
+    console.log('Cart current: ', current);
+
     for (const s in styleSkus)  {
       if (styleSkus[s].size === sizeSelected) {
         setSku(s);

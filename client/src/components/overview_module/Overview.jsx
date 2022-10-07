@@ -52,15 +52,15 @@ function Overview({ product, avgRating, totalReviews }) {
     }
   }, [product]);
 
-  const changeStyleSelected = (style) => {
-    setSelectedStyle(style);
+  const changeStyleSelected = (newStyle) => {
+    setSelectedStyle(newStyle);
   };
 
   if (Object.keys(product).length) {
     return (
       <div id="main-container" className="main-container">
         <div data-testid="overview" className="overview">
-          <Gallery style={selectedStyle} />
+          <Gallery style={selectedStyle} current={style} />
           <div className="new-right">
             <ProductInfo
               product={product}
@@ -72,6 +72,7 @@ function Overview({ product, avgRating, totalReviews }) {
               styles={styles}
               changeStyleSelected={changeStyleSelected}
               style={selectedStyle}
+              current={style}
             />
           </div>
         </div>

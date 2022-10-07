@@ -3,13 +3,15 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Expanded from './Expanded.jsx';
 
-function Gallery({ style }) {
+function Gallery({ style, current }) {
   // const [style, setstyle] = useState({});
   const [selectedPhoto, setSelectedPhoto] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [view, setView] = useState('default');
 
   useEffect(() => {
+    console.log('gallery style: ', style);
+    console.log('gallery current: ', current.current);
     const testAsync = async () => {
       const photos = await style.photos;
       if (photos) {
@@ -17,7 +19,13 @@ function Gallery({ style }) {
       }
     };
     testAsync();
-  }, [style.photos]);
+  }, [style]);
+
+  // useEffect(() => {
+  //   if (current.current.name !== '') {
+  //     setSelectedPhoto(current.current.photos[selectedIndex].url);
+  //   }
+  // }, [current.current]);
 
   const handleChangePhoto = (e) => {
     e.preventDefault();
