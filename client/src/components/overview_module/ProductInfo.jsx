@@ -1,59 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-scroll';
-import getAvgRating from './helper-functions/helper.js';
-import findDefaultStyle from './helper-functions/findDefaultStyle.js';
 
-function ProductInfo({ product_id, product, features, style, styles, avgRating, totalReviews }) {
-  // const [avgRating, setAvgRating] = useState(0);
-  // const [totalReviews, setTotalReviews] = useState(0);
-  const [selectedStyle, setSelectedStyle] = useState({});
-  const [proudctStyles, setProductStyles] = useState({});
-
-  const [price, setPrice] = useState({ amount: '', discounted: false });
-
-  const showPrice = (style) => {
-    if (style.sale_price !== null) {
-      setPrice({ amount: style.sale_price, discounted: true });
-    } else {
-      setPrice({ amount: style.original_price, discounted: false });
-    }
-  };
-
-  useEffect(() => {
-    showPrice(selectedStyle);
-  }, [selectedStyle]);
-
-  // Make a request to get the reviews information, calculate avg, and set state
-
-  // useEffect(() => {
-  //   axios
-  //     .get('/reviews/meta', { params: { product_id: props.product.id } })
-  //     .then((data) => {
-
-  //       setAvgRating(getAvgRating(data.data.ratings).avg);
-  //       setTotalReviews(getAvgRating(data.data.ratings).reviewsCount);
-  //     });
-  // }, []);
-
-  useEffect(() => {
-    setSelectedStyle(style);
-  }, [style]);
-
-  useEffect(() => {
-    setProductStyles(styles);
-  }, [styles]);
-
-  if (
-    Object.keys(product).length &&
-    avgRating !== null &&
-    Object.keys(selectedStyle).length
-  ) {
+function ProductInfo({ product, style, avgRating, totalReviews }) {
+  if (product) {
     return (
       <div className="product-info-container">
         <div className="product_info_reviews">
@@ -96,28 +47,17 @@ function ProductInfo({ product_id, product, features, style, styles, avgRating, 
         <div>{product.category}</div>
         <h2>{product.name}</h2>
         <h3>{product.slogan}</h3>
-        <div>{selectedStyle.name}</div>
+        <div>{style.name}</div>
         <div>
-          {price.discounted ? (
+          {style.sale_price !== 'null' ? (
             <div className="price-container">
-              <div className="discounted-price">${price.amount}</div>
-              <div className="original-price">
-                ${selectedStyle.original_price}
-              </div>
+              <div className="discounted-price">${style.sale_price}</div>
+              <div className="original-price">${style.original_price}</div>
             </div>
           ) : (
-            <div className="original-price">
-              ${selectedStyle.original_price}
-            </div>
+            <div className="original-price">${style.original_price}</div>
           )}
         </div>
-        {/* <div className="description">{props.product.description}</div> */}
-        {/* <ul>
-          {props.product.features.map((feature, index) => (
-            <li key={index}>{`${feature.value} ${feature.feature}`}</li>
-          ))}
-        </ul> */}
-
         <button className="addto-outfit">Add to My Outfit</button>
       </div>
     );

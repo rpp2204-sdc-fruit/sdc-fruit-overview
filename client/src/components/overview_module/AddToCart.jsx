@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function AddToCart(props) {
+function AddToCart({ style }) {
   const [styleAvail, setStyleAvail] = useState({});
   const [outOfStock, setOutOfStock] = useState(true);
   const [sizeSelected, setSizeSelected] = useState('');
@@ -10,8 +10,9 @@ function AddToCart(props) {
   const [sku, setSku] = useState('');
 
   useEffect(() => {
-    const styleSkus = props.style.skus;
-    for (const s in styleSkus) {
+    const styleSkus = style.skus;
+    console.log('style', style);
+    for (const s in styleSkus)  {
       if (styleSkus[s].size === sizeSelected) {
         setSku(s);
       }
@@ -48,7 +49,7 @@ function AddToCart(props) {
   const addToCart = (qty) => {
     axios.post(`/cart/${sku}/${qty}`).then(() => {
       console.log(
-        `${qty} units of ${props.style.name} in size ${sizeSelected} added to the cart`
+        `${qty} units of ${style.name} in size ${sizeSelected} added to the cart`
       );
     });
   };
@@ -74,8 +75,8 @@ function AddToCart(props) {
   };
 
   useEffect(() => {
-    availability(props.style.skus);
-  }, [props.style]);
+    availability(style.skus);
+  }, [style]);
 
   useEffect(() => {
     let qtys = [];

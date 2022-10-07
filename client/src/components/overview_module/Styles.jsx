@@ -47,7 +47,7 @@ function Styles({ styles, changeStyleSelected, style }) {
                     }}
                     value={JSON.stringify(style)}
                     src={style.photos[0].thumbnail_url}
-                    alt={'Image Not Available'}
+                    alt=""
                     key={index}
                   />
                 );
@@ -61,13 +61,13 @@ function Styles({ styles, changeStyleSelected, style }) {
                   }}
                   value={JSON.stringify(style)}
                   src={style.photos[0].thumbnail_url}
-                  alt={'Image Not Available'}
+                  alt=""
                   key={index}
                 />
               );
             })}
           </div>
-          <AddToCart style={selectedStyle} />
+          <AddToCart style={style} />
         </div>
       </div>
     );

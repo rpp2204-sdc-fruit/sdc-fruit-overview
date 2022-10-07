@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ProductInfo from './ProductInfo.jsx';
 import Styles from './Styles.jsx';
@@ -29,7 +30,7 @@ function Overview({ product, avgRating, totalReviews }) {
     name: '',
     original_price: '',
     sale_price: 0,
-    default: true,
+    is_default: true,
     photos: [
       {
         thumbnail_url: '',
@@ -39,11 +40,14 @@ function Overview({ product, avgRating, totalReviews }) {
     skus: [],
   });
 
+  const style = useRef({});
+
   useEffect(() => {
     if (product.product_id) {
       axios.get(`/products/${product.product_id}/styles`).then((response) => {
         setStyles(response.data.styles);
         setSelectedStyle(response.data.default);
+        style.current = response.data.default;
       });
     }
   }, [product]);
@@ -59,11 +63,8 @@ function Overview({ product, avgRating, totalReviews }) {
           <Gallery style={selectedStyle} />
           <div className="new-right">
             <ProductInfo
-              product_id={product.product_id}
               product={product}
-              features={product.features}
               style={selectedStyle}
-              styles={styles}
               avgRating={avgRating}
               totalReviews={totalReviews}
             />

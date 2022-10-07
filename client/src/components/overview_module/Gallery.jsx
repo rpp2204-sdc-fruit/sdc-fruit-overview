@@ -83,7 +83,7 @@ function Gallery({ style }) {
             className="main-img"
             src={selectedPhoto}
             onClick={handleChangeViewExpanded}
-            alt={"Image Unavailable"}
+            alt={"Not Available"}
           />
           <div className="sidebar">
             {selectedIndex !== 0 ? (
@@ -101,10 +101,10 @@ function Gallery({ style }) {
                         handleChangePhoto(e);
                       }}
                       className="style-other-imgs-selected"
-                      src={photo.url}
+                      src={photo.thumbnail_url}
                       index={index}
                       key={index}
-                      alt={"Image Unavailable"}
+                      alt={"Not vailable"}
                     />
                   );
                 }
@@ -114,7 +114,7 @@ function Gallery({ style }) {
                       handleChangePhoto(e);
                     }}
                     className="style-other-imgs"
-                    src={photo.url}
+                    src={photo.thumbnail_url}
                     index={index}
                     key={index}
                   />
@@ -148,3 +148,156 @@ function Gallery({ style }) {
 }
 
 export default Gallery;
+
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import Expanded from './Expanded.jsx';
+
+// function Gallery({ style }) {
+//   // const [style, setstyle] = useState({});
+//   // const [selectedPhoto, setSelectedPhoto] = useState('');
+//   const [selectedIndex, setSelectedIndex] = useState('');
+//   const [view, setView] = useState('default');
+
+//   const selectedPhoto = useRef(0);
+
+//   useEffect(() => {
+//     if (style.current.photos) {
+//       if (style.current.photos[0].url !== '') {
+//         selectedPhoto.current = style.current.photos[0].url;
+//       }
+//     }
+//   }, [style.current]);
+
+//   const handleChangePhoto = (e) => {
+//     e.preventDefault();
+//     selectedPhoto.current = e.target.src;
+//     setSelectedIndex(Number(e.target.getAttribute('index')));
+//   };
+
+//   const handleChangeViewExpanded = () => {
+//     setView('expanded');
+//   };
+
+//   const handleChangeViewDefault = () => {
+//     setView('default');
+//   };
+
+//   let minRange = 0;
+//   let maxRange = 2;
+
+//   const previousPhoto = (e) => {
+//     e.preventDefault();
+//     if (selectedIndex > 0) {
+//       const newIndex = selectedIndex - 1;
+//       setSelectedIndex(newIndex);
+//       const newPhoto = style.current.photos[newIndex].url;
+//       selectedPhoto.current = newPhoto;
+//       if (selectedIndex <= maxRange) {
+//         console.log('SCROLL UP');
+//         const container = document.getElementById('photo-container');
+//         if (container) {
+//           container.scrollBy({ top: -40, left: 0, behaviour: 'smooth' });
+//           maxRange--;
+//           minRange--;
+//         }
+//       }
+//     }
+//   };
+
+//   const nextPhoto = (e) => {
+//     e.preventDefault();
+//     if (selectedIndex < style.current.photos.length - 1) {
+//       const newIndex = selectedIndex + 1;
+//       setSelectedIndex(newIndex);
+//       const newPhoto = style.current.photos[newIndex].url;
+//       selectedPhoto.current(newPhoto);
+//       if (selectedIndex > maxRange) {
+//         const container = document.getElementById('photo-container');
+//         container.scrollBy({ top: 40, left: 0, behaviour: 'smooth' });
+//         maxRange++;
+//         minRange++;
+//       }
+//     }
+//   };
+
+//   if (style.current._id) {
+//     if (
+//       view === 'default' &&
+//       style.current.photos.length &&
+//       selectedPhoto !== ''
+//     ) {
+//       return (
+//         <div className="gallery-container">
+//           <img
+//             className="main-img"
+//             src={selectedPhoto}
+//             onClick={handleChangeViewExpanded}
+//             alt={"Not Available"}
+//           />
+//           <div className="sidebar">
+//             {selectedIndex !== 0 ? (
+//               <KeyboardArrowUpIcon
+//                 className="arrow-up"
+//                 onClick={previousPhoto}
+//               />
+//             ) : null}
+//             <div className="photo-container" id="photo-container">
+//               {style.current.photos.map((photo, index) => {
+//                 if (index === selectedIndex) {
+//                   return (
+//                     <img
+//                       onClick={(e) => {
+//                         handleChangePhoto(e);
+//                       }}
+//                       className="style-other-imgs-selected"
+//                       src={photo.thumbnail_url}
+//                       index={index}
+//                       key={index}
+//                       alt={"Not vailable"}
+//                     />
+//                   );
+//                 }
+//                 return (
+//                   <img
+//                     onClick={(e) => {
+//                       handleChangePhoto(e);
+//                     }}
+//                     className="style-other-imgs"
+//                     src={photo.thumbnail_url}
+//                     index={index}
+//                     key={index}
+//                   />
+//                 );
+//               })}
+//             </div>
+//             {selectedIndex < style.current.photos.length - 1 ? (
+//               <KeyboardArrowDownIcon
+//                 className="arrow-down"
+//                 onClick={nextPhoto}
+//               />
+//             ) : null}
+//           </div>
+//         </div>
+//       );
+//     }
+//     if (view === 'expanded') {
+//       return (
+//         <Expanded
+//           nextPhoto={nextPhoto}
+//           previousPhoto={previousPhoto}
+//           changeViewDefault={handleChangeViewDefault}
+//           photos={style.current.photos}
+//           selectedPhoto={selectedPhoto}
+//           changeSelectedPhoto={handleChangePhoto}
+//           selectedIndex={selectedIndex}
+//         />
+//       );
+//     }
+//   }
+// }
+
+// export default Gallery;
+

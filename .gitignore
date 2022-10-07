@@ -89,7 +89,9 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-client/dist/bundle.js
+client/dist/another.bundle.js
+client/dist/index.bundle.js
+client/dist/runtime.bundle.js
 client/dist/bundle.js.LICENSE.txt
 
 # Gatsby files

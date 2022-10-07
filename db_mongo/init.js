@@ -38,7 +38,9 @@ const productAggregation = [
     },
   },
   {
-    $out: 'products',
+    $merge: {
+      into: 'products',
+    },
   },
 ];
 
@@ -82,7 +84,40 @@ const styleAggregation = [
       as: 'skus',
     },
   },
-  { $out: 'styles' },
+  // {
+  //   $addFields: {
+  //     skus: {
+  //       $arrayToObject: {
+  //         $zip: {
+  //           inputs: [
+  //             {
+  //               $map: {
+  //                 input: {
+  //                   $range: [
+  //                     0,
+  //                     {
+  //                       $size: '$skus',
+  //                     },
+  //                   ],
+  //                 },
+  //                 in: {
+  //                   $toString: '$$this',
+  //                 },
+  //               },
+  //             },
+  //             '$skus',
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
+  {
+    $merge: {
+      into: 'styles',
+      // on: '$skus',
+    },
+  },
 ];
 
 const createDocs = (csvFilePath, collection) =>
