@@ -9,36 +9,23 @@ function AddToCart({ style, current }) {
   const [quantitySelected, setQuantitySelected] = useState(1);
   const [sku, setSku] = useState('');
 
-  useEffect(() => {
-    const styleSkus = style.skus;
-    // console.log('Cart style: ', style);
-    // console.log('Cart current: ', current);
-
-    for (const s in styleSkus)  {
-      if (styleSkus[s].size === sizeSelected) {
-        setSku(s);
-      }
-    }
-  }, [sizeSelected]);
-
   const availability = async (skus) => {
     const resultObj = {};
     let skusArray;
-
-    if (skus) {
+    if (skus.length > 0) {
+      console.log('SKUS:', skus);
       skusArray = await Object.entries(skus);
 
       skusArray.forEach((size) => {
         let sizesArray;
 
         if (size) {
-         sizesArray = Object.entries(size[1]);
+          sizesArray = Object.entries(size[1]);
         }
 
         resultObj[sizesArray[1][1]] = sizesArray[0][1];
       });
     }
-
 
     setStyleAvail(resultObj);
     if (Object.keys(resultObj).length === 0) {
@@ -77,6 +64,7 @@ function AddToCart({ style, current }) {
   };
 
   useEffect(() => {
+    console.log(style);
     availability(style.skus);
   }, [style]);
 
@@ -91,6 +79,18 @@ function AddToCart({ style, current }) {
     }
     setQuantities(qtys);
   }, [sizeSelected]);
+
+  // useEffect(() => {
+  //   const styleSkus = style.skus;
+  //   console.log('Cart style: ', style);
+  //   // console.log('Cart current: ', current);
+
+  //   for (const s in styleSkus)  {
+  //     if (styleSkus[s].size === sizeSelected) {
+  //       setSku(s);
+  //     }
+  //   }
+  // }, [sizeSelected]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
