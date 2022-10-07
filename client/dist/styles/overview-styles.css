@@ -71,7 +71,8 @@
 
 .product_overview_style_selector {
   display: flex;
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .modalBackground {

@@ -113,7 +113,7 @@ function Gallery({ style, current }) {
                         handleChangePhoto(e);
                       }}
                       className="style-other-imgs-selected"
-                      src={photo.thumbnail_url}
+                      src={photo.url}
                       index={index}
                       key={index}
                       alt={"Not vailable"}
@@ -126,7 +126,7 @@ function Gallery({ style, current }) {
                       handleChangePhoto(e);
                     }}
                     className="style-other-imgs"
-                    src={photo.thumbnail_url}
+                    src={photo.url}
                     index={index}
                     key={index}
                   />
