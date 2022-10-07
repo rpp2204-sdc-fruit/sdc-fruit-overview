@@ -9,27 +9,27 @@ function Gallery({ style, current }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [view, setView] = useState('default');
 
-  // useEffect(() => {
-  //   console.log('gallery style: ', style);
-  //   console.log('gallery current: ', current.current);
-  //   const testAsync = async () => {
-  //     const photos = await style.photos;
-  //     if (photos) {
-  //       setSelectedPhoto(photos[selectedIndex].url);
-  //     }
-  //   };
-  //   testAsync();
-  // }, [style]);
-
   useEffect(() => {
-    const currentStyle = current.current;
+    console.log('gallery style: ', style);
+    console.log('gallery current: ', current.current);
+    const testAsync = async () => {
+      const photos = await style.photos;
+      if (photos) {
+        setSelectedPhoto(photos[selectedIndex].url);
+      }
+    };
+    testAsync();
+  }, [style]);
 
-    if (currentStyle.name !== undefined) {
-      console.log(currentStyle.name);
-      console.log(currentStyle.photos);
-      setSelectedPhoto(currentStyle.photos[selectedIndex].url);
-    }
-  }, [current.current]);
+  // useEffect(() => {
+  //   const currentStyle = current.current;
+
+  //   if (currentStyle.name !== undefined) {
+  //     console.log(currentStyle.name);
+  //     console.log(currentStyle.photos);
+  //     setSelectedPhoto(currentStyle.photos[selectedIndex].url);
+  //   }
+  // }, [current.current]);
 
   const handleChangePhoto = (e) => {
     e.preventDefault();

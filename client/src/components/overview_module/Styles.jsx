@@ -5,16 +5,14 @@ import React, { useState, useEffect } from 'react';
 import AddToCart from './AddToCart.jsx';
 // import Gallery from './Gallery.jsx';
 
-function Styles({ styles, changeStyleSelected, style, current }) {
+function Styles({ styles, changeStyleSelected, style }) {
   const [selectedStyle, setSelectedStyle] = useState({});
 
-  // useEffect(() => {
-  //   setSelectedStyle(style);
-  // }, []);
+  useEffect(() => {
+    setSelectedStyle(style);
+  }, []);
 
   useEffect(() => {
-    // console.log('Styles style: ', style);
-    // console.log('Styles current: ', current);
     setSelectedStyle(style);
     changeStyleSelected(style);
   }, [styles]);
@@ -39,16 +37,16 @@ function Styles({ styles, changeStyleSelected, style, current }) {
             data-testid="style-selector"
             className="product_overview_style_selector"
           >
-            {styles.map((s, index) => {
-              if (s.name === selectedStyle.name) {
+            {styles.map((style, index) => {
+              if (style.name === selectedStyle.name) {
                 return (
                   <img
                     className="selected-style-thumbnail"
                     onClick={(e) => {
                       handleSelect(e);
                     }}
-                    value={JSON.stringify(s)}
-                    src={s.photos[0].thumbnail_url}
+                    value={JSON.stringify(style)}
+                    src={style.photos[0].thumbnail_url}
                     alt=""
                     key={index}
                   />
@@ -69,9 +67,7 @@ function Styles({ styles, changeStyleSelected, style, current }) {
               );
             })}
           </div>
-          <AddToCart
-            style={style}
-            current={current} />
+          <AddToCart style={style} />
         </div>
       </div>
     );
