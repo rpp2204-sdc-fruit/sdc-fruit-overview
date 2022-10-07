@@ -4,8 +4,8 @@ import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-scroll';
 
 function ProductInfo({ product, style, avgRating, totalReviews, current }) {
-  console.log('Gallery style: ', style);
-  console.log('Gallery current: ', current);
+  // console.log('Gallery style: ', style);
+  // console.log('Gallery current: ', current);
   if (product) {
     return (
       <div className="product-info-container">

@@ -13,8 +13,8 @@ function Styles({ styles, changeStyleSelected, style, current }) {
   // }, []);
 
   useEffect(() => {
-    console.log('Styles style: ', style);
-    console.log('Styles current: ', current);
+    // console.log('Styles style: ', style);
+    // console.log('Styles current: ', current);
     setSelectedStyle(style);
     changeStyleSelected(style);
   }, [styles]);

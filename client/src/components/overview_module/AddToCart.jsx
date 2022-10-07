@@ -11,8 +11,8 @@ function AddToCart({ style, current }) {
 
   useEffect(() => {
     const styleSkus = style.skus;
-    console.log('Cart style: ', style);
-    console.log('Cart current: ', current);
+    // console.log('Cart style: ', style);
+    // console.log('Cart current: ', current);
 
     for (const s in styleSkus)  {
       if (styleSkus[s].size === sizeSelected) {
