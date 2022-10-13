@@ -7,24 +7,6 @@ import Gallery from './Gallery.jsx';
 import Slogan from './Slogan.jsx';
 
 function Overview({ product, avgRating, totalReviews }) {
-  const [styles, setStyles] = useState([
-    {
-      style_id: 1,
-      product_id: 1,
-      name: '',
-      original_price: '',
-      sale_price: 0,
-      default: true,
-      photos: [
-        {
-          thumbnail_url: '',
-          url: '',
-        },
-      ],
-      skus: [],
-    },
-  ]);
-
   const [selectedStyle, setSelectedStyle] = useState({
     style_id: 1,
     name: '',
@@ -37,8 +19,10 @@ function Overview({ product, avgRating, totalReviews }) {
         url: '',
       },
     ],
-    skus: [],
+    skus: {},
   });
+
+  const [styles, setStyles] = useState([selectedStyle]);
 
   const style = useRef({});
 

@@ -12,19 +12,15 @@ function AddToCart({ style, current }) {
   const availability = async (skus) => {
     const resultObj = {};
     let skusArray;
-    if (skus.length > 0) {
-      console.log('SKUS:', skus);
-      skusArray = await Object.entries(skus);
+    if (skus) {
+      skusArray = Object.entries(skus);
+      if (skusArray.length > 0) {
+        skusArray.forEach((size) => {
+          const sizesArray = Object.entries(size[1]);
 
-      skusArray.forEach((size) => {
-        let sizesArray;
-
-        if (size) {
-          sizesArray = Object.entries(size[1]);
-        }
-
-        resultObj[sizesArray[1][1]] = sizesArray[0][1];
-      });
+          resultObj[sizesArray[0][1]] = sizesArray[1][1];
+        });
+      }
     }
 
     setStyleAvail(resultObj);
@@ -36,11 +32,14 @@ function AddToCart({ style, current }) {
   };
 
   const addToCart = (qty) => {
-    axios.post(`/cart/${sku}/${qty}`).then(() => {
-      console.log(
-        `${qty} units of ${style.name} in size ${sizeSelected} added to the cart`
-      );
-    });
+    axios
+      .post(`/cart/${sku}/${qty}`)
+      .then(() => {
+        console.log(
+          `${qty} units of ${style.name} in size ${sizeSelected} added to the cart`
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   const openDropdown = (e) => {
@@ -64,7 +63,6 @@ function AddToCart({ style, current }) {
   };
 
   useEffect(() => {
-    console.log(style);
     availability(style.skus);
   }, [style]);
 
@@ -80,17 +78,16 @@ function AddToCart({ style, current }) {
     setQuantities(qtys);
   }, [sizeSelected]);
 
-  // useEffect(() => {
-  //   const styleSkus = style.skus;
-  //   console.log('Cart style: ', style);
-  //   // console.log('Cart current: ', current);
+  useEffect(() => {
+    const styleSkus = style.skus;
 
-  //   for (const s in styleSkus)  {
-  //     if (styleSkus[s].size === sizeSelected) {
-  //       setSku(s);
-  //     }
-  //   }
-  // }, [sizeSelected]);
+    for (const s in styleSkus) {
+      console.log(styleSkus)
+      if (styleSkus[s].size === sizeSelected) {
+        setSku(s);
+      }
+    }
+  }, [sizeSelected]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();

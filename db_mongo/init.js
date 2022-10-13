@@ -77,41 +77,40 @@ const styleAggregation = [
           $project: {
             _id: 0,
             style_id: 0,
-            sku_id: 0,
           },
         },
       ],
       as: 'skus',
     },
   },
-  // {
-  //   $addFields: {
-  //     skus: {
-  //       $arrayToObject: {
-  //         $zip: {
-  //           inputs: [
-  //             {
-  //               $map: {
-  //                 input: {
-  //                   $range: [
-  //                     0,
-  //                     {
-  //                       $size: '$skus',
-  //                     },
-  //                   ],
-  //                 },
-  //                 in: {
-  //                   $toString: '$$this',
-  //                 },
-  //               },
-  //             },
-  //             '$skus',
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  {
+    $addFields: {
+      skus: {
+        $arrayToObject: {
+          $zip: {
+            inputs: [
+              {
+                $map: {
+                  input: {
+                    $range: [
+                      0,
+                      {
+                        $size: '$skus',
+                      },
+                    ],
+                  },
+                  in: {
+                    $toString: '$$this',
+                  },
+                },
+              },
+              '$skus',
+            ],
+          },
+        },
+      },
+    },
+  },
   {
     $merge: {
       into: 'styles',
