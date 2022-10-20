@@ -17,8 +17,7 @@ function AddToCart({ style, current }) {
       if (skusArray.length > 0) {
         skusArray.forEach((size) => {
           const sizesArray = Object.entries(size[1]);
-
-          resultObj[sizesArray[0][1]] = sizesArray[1][1];
+          resultObj[sizesArray[1][1]] = sizesArray[0][1];
         });
       }
     }
@@ -82,9 +81,8 @@ function AddToCart({ style, current }) {
     const styleSkus = style.skus;
 
     for (const s in styleSkus) {
-      console.log(styleSkus)
       if (styleSkus[s].size === sizeSelected) {
-        setSku(s);
+        setSku(styleSkus[s]);
       }
     }
   }, [sizeSelected]);
@@ -92,7 +90,7 @@ function AddToCart({ style, current }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     if (!outOfStock && sizeSelected !== '' && quantitySelected !== 0) {
-      addToCart(quantitySelected);
+      addToCart(sku, sizeSelected, quantitySelected);
     } else if (!outOfStock && sizeSelected === '') {
       console.log('Open the size selector');
       openDropdown(e);

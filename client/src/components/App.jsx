@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams, redirect } from 'react-router-dom';
 import Overview from './overview_module/Overview.jsx';
 import QandAModule from './questions_answers_module/QandAModule.jsx';
 import ReviewsModule from './reviews_module/ReviewsModule.jsx';
@@ -31,7 +31,12 @@ function App() {
         const currentProduct = res.data[0];
         setProduct(currentProduct);
         setProductName(currentProduct.name);
-        setProductId(currentProduct.id);
+        setProductId(currentProduct.product_idid);
+
+        const id = res.data[0].product_id;
+        const url = new URL(window.location);
+        url.searchParams.append('product_id', `${id}`);
+        window.history.pushState({}, '', url);
       });
     }
   }, [product_id]);

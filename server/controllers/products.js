@@ -47,6 +47,7 @@ function readRelated(req, res) {
 function createCart(req, res) {
   console.log(req.params);
   console.log(req.params.sku, req.params.qty);
+  res.sendStatus(201);
 }
 
 module.exports = {
