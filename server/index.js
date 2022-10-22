@@ -17,10 +17,10 @@ app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 app.use('/', require('./routes.js'));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  // next(err);
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   // next(err);
+// });
 
 const port = process.env.PORT || 8000;
 

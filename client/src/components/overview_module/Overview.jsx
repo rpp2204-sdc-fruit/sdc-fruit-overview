@@ -27,7 +27,7 @@ function Overview({ product, avgRating, totalReviews }) {
   const style = useRef({});
 
   useEffect(() => {
-    if (product.product_id) {
+    if (product) {
       axios.get(`/products/${product.product_id}/styles`).then((response) => {
         setStyles(response.data.styles);
         setSelectedStyle(response.data.default);
@@ -40,7 +40,7 @@ function Overview({ product, avgRating, totalReviews }) {
     setSelectedStyle(newStyle);
   };
 
-  if (Object.keys(product).length) {
+  if (product) {
     return (
       <div id="main-container" className="main-container">
         <div data-testid="overview" className="overview">

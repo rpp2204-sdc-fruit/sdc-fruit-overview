@@ -137,39 +137,67 @@ const createDocs = (csvFilePath, collection) =>
     );
   });
 
-const aggregateDocs = (collection) => {
-  console.log(`Aggregating ${collection}`);
 
-  switch (collection) {
-    case 'products':
-      db.products.createIndex({ product_id: 1 });
-      db.features.createIndex({ product_id: 1 });
-      db.products.aggregate(productAggregation);
-      db.features.drop();
-      break;
+// const aggregateDocs = (collection) => {
+//   console.log(`Aggregating ${collection}`);
 
-    case 'styles':
-      db.styles.createIndex({ style_id: 1 });
-      db.styles.createIndex({ is_default: -1 });
-      db.photos.createIndex({ style_id: 1 });
-      db.skus.createIndex({ style_id: 1 });
-      db.styles.aggregate(styleAggregation);
-      break;
-    default:
-  }
+//   switch (collection) {
+//     case 'products':
+//       db.products.createIndex({ product_id: 1 });
+//       db.features.createIndex({ product_id: 1 });
+//       db.products.aggregate(productAggregation);
+//       db.features.drop();
+//       break;
 
-  console.log(`Successfully aggregated ${collection}`);
-};
+//     case 'styles':
+//       db.styles.createIndex({ style_id: 1 });
+//       db.styles.createIndex({ is_default: -1 });
+//       db.photos.createIndex({ style_id: 1 });
+//       db.skus.createIndex({ style_id: 1 });
+//       db.styles.aggregate(styleAggregation);
+//       break;
+//     default:
+//   }
+
+//   console.log(`Successfully aggregated ${collection}`);
+// };
 
 createDocs(productsCSV, 'products');
 createDocs(stylesCSV, 'styles');
 createDocs(photosCSV, 'photos');
 
-createDocs(featuresCSV, 'features').then((collection) =>
-  aggregateDocs('products')
-);
+createDocs(featuresCSV, 'features')
+  .then(() => {
+    console.log('aggregating products');
+    db.products.aggregate(productAggregation);
+    return;
+  })
+  .then(() => {
+    console.log('completed product aggregation');
+    db.features.drop();
+    db.products.createIndex({ product_id: 1 });
+  })
+  .catch((err) => console.log(err));
 
-createDocs(skusCSV, 'skus').then((collection) => aggregateDocs('styles'));
+createDocs(skusCSV, 'skus')
+  .then(() => {
+    console.log('aggregating styles');
+    db.styles.aggregate(styleAggregation);
+    return;
+  })
+  .then(() => {
+    console.log('completed style aggregation');
+    db.skus.drop();
+    db.photos.drop();
+    db.styles.createIndex({ style_id: 1 });
+    db.styles.createIndex({ is_default: -1 });
+  });
+
+// createDocs(featuresCSV, 'features').then((collection) =>
+//   aggregateDocs('products')
+// );
+
+// createDocs(skusCSV, 'skus').then((collection) => aggregateDocs('styles'));
 
 // get default style in product
 // get skus array turned to an embedded object

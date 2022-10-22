@@ -1,10 +1,11 @@
 const express = require('express');
+
+const router = express.Router();
+
 const questions = require('./controllers/questions.js');
 const products = require('./controllers/products.js');
 const reviews = require('./controllers/reviews.js');
 const global = require('./controllers/global.js');
-
-const router = express.Router();
 
 /*
   Product Routes
