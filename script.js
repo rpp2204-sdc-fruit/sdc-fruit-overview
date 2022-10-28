@@ -13,10 +13,11 @@ export const options = {
   scenarios: {
     open_model: {
       executor: 'constant-arrival-rate',
-      rate: 1000,
+      rate: 100,
       timeUnit: '1s',
       duration: '30s',
       preAllocatedVUs: 10000,
+      // maxVUs: 10,
     },
   },
 };
@@ -50,11 +51,11 @@ export default function () {
   });
   check(responses['all products'], {
     'all products page status was 200': (res) => res.status === 200,
-    'products data was sent back': (res) => res.body.length > 0,
+    // 'products data was sent back': (res) => res.body.length > 0,
   });
   check(responses['product info'], {
     'product info status was 200': (res) => res.status === 200,
-    'product data was sent back': (res) => res.body.length > 0,
+    // 'product data was sent back': (res) => res.body.length > 0,
   });
   check(responses['product styles'], {
     'styles page status was 200': (res) => res.status === 200,
