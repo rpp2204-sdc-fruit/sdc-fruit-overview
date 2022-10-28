@@ -28,6 +28,7 @@ const SkuSchema = new mongoose.Schema({
 });
 
 const StyleSchema = new mongoose.Schema({
+  _id: Number,
   style_id: Number,
   product_id: Number,
   name: String,
