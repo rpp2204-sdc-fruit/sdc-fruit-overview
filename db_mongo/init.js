@@ -1,15 +1,15 @@
 const { exec } = require('child_process');
 
 const productsCSV =
-  '/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/product.csv';
+  '/sdc-fruit-overview/init_data/product.csv';
 const featuresCSV =
-  '/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/features.csv';
+  '/sdc-fruit-overview/init_data/features.csv';
 const stylesCSV =
-  '/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/styles.csv';
+  '/sdc-fruit-overview/init_data/styles.csv';
 const skusCSV =
-  '/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/skus.csv';
+  '/sdc-fruit-overview/init_data/skus.csv';
 const photosCSV =
-  '/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/photos.csv';
+  '/sdc-fruit-overview/init_data/photos.csv';
 
 use('products');
 db.dropDatabase();
