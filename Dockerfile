@@ -24,4 +24,4 @@ EXPOSE 3000
 
 ## After image build, when we build or container
 ##Entry point of nodeJS application
-CMD ["node", "index.js"]
+CMD ["node", "server/index.js"]
