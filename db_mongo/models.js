@@ -5,8 +5,6 @@ const FeatureSchema = new mongoose.Schema({
   product_id: Number,
   feature: String,
   value: String,
-  created_at: Date,
-  updated_at: Date,
 });
 
 const PhotoSchema = new mongoose.Schema({
@@ -14,8 +12,6 @@ const PhotoSchema = new mongoose.Schema({
   style_id: Number,
   url: String,
   thumbnail_url: String,
-  created_at: Date,
-  updated_at: Date,
 });
 
 const SkuSchema = new mongoose.Schema({
@@ -23,8 +19,6 @@ const SkuSchema = new mongoose.Schema({
   style_id: Number,
   quantity: Number,
   size: String,
-  created_at: Date,
-  updated_at: Date,
 });
 
 const StyleSchema = new mongoose.Schema({
@@ -33,9 +27,8 @@ const StyleSchema = new mongoose.Schema({
   name: String,
   original_price: String,
   sale_price: String,
-  is_default: Boolean,
-  created_at: Date,
-  updated_at: Date,
+  default_style: Boolean,
+  last_modified: Date,
 });
 
 const ProductSchema = new mongoose.Schema({
@@ -45,8 +38,7 @@ const ProductSchema = new mongoose.Schema({
   description: String,
   category: String,
   default_price: String,
-  created_at: Date,
-  updated_at: Date,
+  last_modified: Date,
 });
 
 const Products = mongoose.model('Products', ProductSchema);

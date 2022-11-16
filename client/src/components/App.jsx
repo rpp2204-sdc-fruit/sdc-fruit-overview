@@ -11,7 +11,7 @@ import Topbar from './Topbar.jsx';
 function App() {
   const { id } = useParams();
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState(0);
+  const [productId, setProductId] = useState(111784);
   const [productName, setProductName] = useState('');
 
   useEffect(() => {

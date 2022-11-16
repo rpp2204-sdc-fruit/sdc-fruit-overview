@@ -1,26 +1,25 @@
-require('dotenv').config();
-require('../db_mongo/config.js');
+require("dotenv").config();
+require("../db_mongo/mongo.js");
+require("../cache/redis.js");
 
-const express = require('express');
-const history = require('connect-history-api-fallback');
-const compression = require('compression');
-const path = require('path');
-const cors = require('cors');
+const express = require("express");
+// const history = require('connect-history-api-fallback');
+const compression = require("compression");
+const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
 app.use(cors());
-app.use(history());
 app.use(compression());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '/../client/dist')));
+app.use(express.static(path.join(__dirname, "/../client/dist")));
 
-app.use('/', require('./routes.js'));
+app.get(`/loaderio-6bb9cb11b37d573ec15a7a348de8829f`, (req, res) => {
+  res.send("loaderio-6bb9cb11b37d573ec15a7a348de8829f");
+});
 
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   // next(err);
-// });
+app.use("/", require("./routes.js"));
 
 const port = process.env.PORT || 8000;
 

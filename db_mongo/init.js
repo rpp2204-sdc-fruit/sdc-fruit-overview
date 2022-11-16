@@ -1,18 +1,19 @@
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 
 const productsCSV =
-  '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/product.csv';
+  "/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/product.csv";
 const featuresCSV =
-  '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/features.csv';
+  "/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/features.csv";
 const stylesCSV =
-  '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/styles.csv';
+  "/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/styles.csv";
 const skusCSV =
-  '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/skus.csv';
+  "/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/skus.csv";
 const photosCSV =
-  '/Users/anthony/Desktop/HR2/SDC/sdc-fruit-overview/init_data/photos.csv';
+  "/Users/anthony/Desktop/SDC/sdc-fruit-overview/init_data/photos.csv";
 
-use('products');
+use("products");
 db.dropDatabase();
+console.log("Dropped Products");
 
 const productAggregation = [
   {
@@ -22,9 +23,9 @@ const productAggregation = [
   },
   {
     $lookup: {
-      from: 'features',
-      localField: 'product_id',
-      foreignField: 'product_id',
+      from: "features",
+      localField: "product_id",
+      foreignField: "product_id",
       pipeline: [
         {
           $project: {
@@ -34,12 +35,12 @@ const productAggregation = [
           },
         },
       ],
-      as: 'features',
+      as: "features",
     },
   },
   {
     $merge: {
-      into: 'products',
+      into: "products",
     },
   },
 ];
@@ -52,9 +53,9 @@ const styleAggregation = [
   },
   {
     $lookup: {
-      from: 'photos',
-      localField: 'style_id',
-      foreignField: 'style_id',
+      from: "photos",
+      localField: "style_id",
+      foreignField: "style_id",
       pipeline: [
         {
           $project: {
@@ -64,14 +65,14 @@ const styleAggregation = [
           },
         },
       ],
-      as: 'photos',
+      as: "photos",
     },
   },
   {
     $lookup: {
-      from: 'skus',
-      localField: 'style_id',
-      foreignField: 'style_id',
+      from: "skus",
+      localField: "style_id",
+      foreignField: "style_id",
       pipeline: [
         {
           $project: {
@@ -80,7 +81,7 @@ const styleAggregation = [
           },
         },
       ],
-      as: 'skus',
+      as: "skus",
     },
   },
   {
@@ -95,16 +96,16 @@ const styleAggregation = [
                     $range: [
                       0,
                       {
-                        $size: '$skus',
+                        $size: "$skus",
                       },
                     ],
                   },
                   in: {
-                    $toString: '$$this',
+                    $toString: "$$this",
                   },
                 },
               },
-              '$skus',
+              "$skus",
             ],
           },
         },
@@ -113,8 +114,7 @@ const styleAggregation = [
   },
   {
     $merge: {
-      into: 'styles',
-      // on: '$skus',
+      into: "styles",
     },
   },
 ];
@@ -137,67 +137,49 @@ const createDocs = (csvFilePath, collection) =>
     );
   });
 
+const importData = () =>
+  new Promise(async (resolve, reject) => {
+    createDocs(productsCSV, "products")
+      .then(() => {
+        console.log("Indexing Products");
+        db.products.createIndex({ product_id: 1 });
+      })
+      .catch((err) => console.error("Error creating products", err));
 
-// const aggregateDocs = (collection) => {
-//   console.log(`Aggregating ${collection}`);
+    createDocs(featuresCSV, "features")
+      .then(() => {
+        console.log("Indexing Features");
+        db.features.createIndex({ product_id: 1 });
+      })
+      .catch((err) => console.log("Error creating features", err));
 
-//   switch (collection) {
-//     case 'products':
-//       db.products.createIndex({ product_id: 1 });
-//       db.features.createIndex({ product_id: 1 });
-//       db.products.aggregate(productAggregation);
-//       db.features.drop();
-//       break;
+    createDocs(stylesCSV, "styles")
+      .then(() => {
+        console.log("Indexing Styles");
+        db.styles.createIndex({ product_id: 1 });
+      })
+      .catch((err) => console.log("Error creating styles", err));
 
-//     case 'styles':
-//       db.styles.createIndex({ style_id: 1 });
-//       db.styles.createIndex({ is_default: -1 });
-//       db.photos.createIndex({ style_id: 1 });
-//       db.skus.createIndex({ style_id: 1 });
-//       db.styles.aggregate(styleAggregation);
-//       break;
-//     default:
-//   }
+    createDocs(photosCSV, "photos")
+      .then(() => {
+        console.log("Indexing Photos");
+        db.photos.createIndex({ style_id: 1 });
+      })
+      .catch((err) => console.log("Error creating photos", err));
 
-//   console.log(`Successfully aggregated ${collection}`);
-// };
+    createDocs(skusCSV, "skus")
+      .then(() => {
+        console.log("Indexing Skus");
+        db.skus.createIndex({ style_id: 1 });
+      })
+      .catch((err) => console.log("Error creating skus", err));
 
-createDocs(productsCSV, 'products');
-createDocs(stylesCSV, 'styles');
-createDocs(photosCSV, 'photos');
-
-createDocs(featuresCSV, 'features')
-  .then(() => {
-    console.log('aggregating products');
-    db.products.aggregate(productAggregation);
-    return;
-  })
-  .then(() => {
-    console.log('completed product aggregation');
-    db.features.drop();
-    db.products.createIndex({ product_id: 1 });
-  })
-  .catch((err) => console.log(err));
-
-createDocs(skusCSV, 'skus')
-  .then(() => {
-    console.log('aggregating styles');
-    db.styles.aggregate(styleAggregation);
-    return;
-  })
-  .then(() => {
-    console.log('completed style aggregation');
-    db.skus.drop();
-    db.photos.drop();
-    db.styles.createIndex({ style_id: 1 });
-    db.styles.createIndex({ is_default: -1 });
+    resolve();
   });
 
-// createDocs(featuresCSV, 'features').then((collection) =>
-//   aggregateDocs('products')
-// );
-
-// createDocs(skusCSV, 'skus').then((collection) => aggregateDocs('styles'));
-
-// get default style in product
-// get skus array turned to an embedded object
+importData()
+  .then(() => {
+    db.products.aggregate(productAggregation);
+    db.styles.aggregate(styleAggregation);
+  })
+  .catch((err) => console.log("Error Aggregating", err));
