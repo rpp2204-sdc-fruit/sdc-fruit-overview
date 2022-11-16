@@ -14,7 +14,7 @@ WORKDIR /app
 COPY package.json .
 
 ## Install dependancies
-RUN npm Install
+RUN npm install
 
 ##Copy the source code and support files
 COPY . ./
