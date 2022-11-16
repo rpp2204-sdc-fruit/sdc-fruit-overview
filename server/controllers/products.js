@@ -1,4 +1,3 @@
-const db = require("../../db_mongo/mongo.js");
 const cache = require("../../cache/redis.js");
 
 const { Products, Styles } = require("../../db_mongo/models.js");
