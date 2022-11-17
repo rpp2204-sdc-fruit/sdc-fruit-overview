@@ -1,5 +1,5 @@
 ## Download the official nodeJSv15 image from docker
-FROM node:15
+FROM node:16.18
 
 ## *Optional - The working directory.
 ## nodeJS working directory

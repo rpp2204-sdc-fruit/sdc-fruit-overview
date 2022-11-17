@@ -7,6 +7,7 @@ function readAllProducts(req, res) {
     .get("products")
     .then(async (reply) => {
       if (reply !== null) {
+        console.log('Returned Data from Cache');
         return res.status(200).json(JSON.parse(reply));
       }
 
@@ -35,6 +36,7 @@ function readProduct(req, res) {
     .get(product_id)
     .then((reply) => {
       if (reply !== null) {
+        console.log('Returned Data from Cache');
         return res.status(200).json(JSON.parse(reply));
       }
       Products.findOne({ product_id }, async (error, product) => {
@@ -60,6 +62,7 @@ function readStyle(req, res) {
     .get(`${product_id}_styles`)
     .then((reply) => {
       if (reply !== null) {
+        console.log('Returned Data from Cache');
         return res.status(200).json(JSON.parse(reply));
       }
 
